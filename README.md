@@ -2,6 +2,8 @@
 ### ⚽️🏀🏈⚾️🎾🏒
 A collection of scalable UIViews displaying top down drawings of various fields/arenas/courts.
 
+*Slowly adding in some of the most popular sports before putting together into a framework.*
+
 ### 🤔 Goals/Thoughts
 - Learn more about drawing views.
 - Make something scalable
@@ -23,24 +25,22 @@ SwiftySport view's themes can be changed as vars of the view. See tables below f
 
 **Ratios**
 
-| Type            | Ratio      |
-| --------------- |:----------:|
-| Hockey rink     | 40:17      |
-| Hockey rink     | 40:17      |
-| Hockey rink     | 40:17      |
-| Hockey rink     | 40:17      |
-| Hockey rink     | 40:17      |
+| Type             | Ratio     |
+| ---------------- |:---------:|
+| Hockey rink      | 40:17     |
+| Tennis Court     | 13:6      |
+
 
 **Themes**
 
 IceRinkView
 
-| var            | Ratio      |
-| --------------- |:----------:|
-| iceColor     | 40:17      |
-| rinkRed     | 40:17      |
-| rinkBlue     | 40:17      |
-| boardColor     | 40:17      |
+| Colors         |
+| -------------- |
+| iceColor       |
+| redLineColor   |
+| blueLineColor  |
+| boardColor     |
 
 
 ### 📜 Todos
@@ -49,7 +49,7 @@ IceRinkView
 - [ ] Set up CocoaPods
 
 ##### Main
-- [ ] Add tennis court
+- [X] Add tennis court
 - [ ] Add soccer field
 - [ ] Add football field
 - [ ] Add basketball court

@@ -11,12 +11,16 @@ import SnapKit
 
 
 protocol IceRinkViewDataSource {
-    func widthForIceRink(_ iceRinkView: IceRinkView) -> CGFloat
+    func widthForRink(_ iceRinkView: IceRinkView) -> CGFloat
 }
 
 class IceRinkView: UIView {
     
     var dataSource: IceRinkViewDataSource?
+    
+    // Don't change these constants, used for ratios
+    private let kRealRinkWidth: CGFloat = 200.0
+    private let kRealRinkHeight: CGFloat = 85.0
     
     // UI
     // iceRinkView holds the rink's UI elements
@@ -64,7 +68,7 @@ class IceRinkView: UIView {
     private var creases: [UIView] = []
     
     // VARS
-    
+    // Colors with a redraw on set tp update view
     var iceColor: UIColor = .white {
         didSet {
             drawToScale()
@@ -89,10 +93,6 @@ class IceRinkView: UIView {
     // Setup temp
     private var iceRinkViewWidth: CGFloat = 0
     private var iceRinkViewHeight: CGFloat = 0
-    
-    // Don't change these constants, used for ratios
-    private let kRealRinkWidth: CGFloat = 200.0
-    private let kRealRinkHeight: CGFloat = 85.0
     
     // Ratios based on real rink values
     private var rinkCornerRatio: CGFloat = 0
@@ -394,7 +394,7 @@ class IceRinkView: UIView {
     }
     
     func drawToScale() {
-        guard let width = dataSource?.widthForIceRink(self) else {
+        guard let width = dataSource?.widthForRink(self) else {
             print("No width set in dataSource")
             return
         }

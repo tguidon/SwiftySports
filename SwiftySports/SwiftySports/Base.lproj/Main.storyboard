@@ -30,15 +30,26 @@
                                     <constraint firstAttribute="width" constant="320" id="lcr-m9-cRu"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZAJ-2Z-Chs" customClass="TennisCourtView" customModule="SwiftySports" customModuleProvider="target">
+                                <rect key="frame" x="27" y="220" width="320" height="147.5"/>
+                                <color key="backgroundColor" red="0.62792768381589503" green="1" blue="0.58727201034619092" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="320" id="6sj-CC-Tx5"/>
+                                    <constraint firstAttribute="width" secondItem="ZAJ-2Z-Chs" secondAttribute="height" multiplier="13:6" id="i0w-6J-pNa"/>
+                                </constraints>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="ChW-1w-LRI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="29d-7e-VyB"/>
+                            <constraint firstItem="ZAJ-2Z-Chs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="AgM-iw-Ors"/>
+                            <constraint firstItem="ZAJ-2Z-Chs" firstAttribute="top" secondItem="ChW-1w-LRI" secondAttribute="bottom" constant="32" id="oEx-Np-2w6"/>
                             <constraint firstItem="ChW-1w-LRI" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="32" id="ttc-Ip-e5q"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="iceRinkView" destination="ChW-1w-LRI" id="39X-WY-C0a"/>
+                        <outlet property="tennisCourtView" destination="ZAJ-2Z-Chs" id="LfZ-bQ-amA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
