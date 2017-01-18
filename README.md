@@ -29,18 +29,17 @@ SwiftySport view's themes can be changed as vars of the view. See tables below f
 | ---------------- |:---------:|
 | Hockey rink      | 40:17     |
 | Tennis Court     | 13:6      |
+| Soccer Field     |           |
 
 
 **Themes**
 
-IceRinkView
-
-| Colors         |
-| -------------- |
-| iceColor       |
-| redLineColor   |
-| blueLineColor  |
-| boardColor     |
+| IceRinkView    | TennisCourtView | SoccerFieldView  |
+| -------------- | --------------- | ---------------- |
+| iceColor       | courtColor      | fieldColor       |
+| redLineColor   | lineColor       | lineColor        |
+| blueLineColor  |                 |                  |
+| boardColor     |                 |                  |
 
 
 ### 📜 Todos

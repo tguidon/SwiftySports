@@ -38,17 +38,28 @@
                                     <constraint firstAttribute="width" secondItem="ZAJ-2Z-Chs" secondAttribute="height" multiplier="13:6" id="i0w-6J-pNa"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SaR-Qe-8An" customClass="SoccerFieldView" customModule="SwiftySports" customModuleProvider="target">
+                                <rect key="frame" x="134.5" y="399.5" width="105" height="68"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="68" id="3TC-Pv-z4R"/>
+                                    <constraint firstAttribute="width" constant="105" id="FdE-qQ-B5P"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="ChW-1w-LRI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="29d-7e-VyB"/>
+                            <constraint firstItem="SaR-Qe-8An" firstAttribute="top" secondItem="ZAJ-2Z-Chs" secondAttribute="bottom" constant="32" id="85p-8L-RsT"/>
                             <constraint firstItem="ZAJ-2Z-Chs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="AgM-iw-Ors"/>
+                            <constraint firstItem="SaR-Qe-8An" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="HdB-rh-Ngi"/>
                             <constraint firstItem="ZAJ-2Z-Chs" firstAttribute="top" secondItem="ChW-1w-LRI" secondAttribute="bottom" constant="32" id="oEx-Np-2w6"/>
                             <constraint firstItem="ChW-1w-LRI" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="32" id="ttc-Ip-e5q"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="iceRinkView" destination="ChW-1w-LRI" id="39X-WY-C0a"/>
+                        <outlet property="soccerFieldView" destination="SaR-Qe-8An" id="48n-OH-Shd"/>
                         <outlet property="tennisCourtView" destination="ZAJ-2Z-Chs" id="LfZ-bQ-amA"/>
                     </connections>
                 </viewController>

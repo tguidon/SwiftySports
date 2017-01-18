@@ -84,9 +84,7 @@ class TennisCourtView: UIView {
         sidelineOffset = tennisCourtViewHeight * sidelineOffsetRatio
         
         let serviceLineOffsetRatio: CGFloat = 21 / kRealCourtWidth
-        serviceLineOffset = tennisCourtViewWidth * serviceLineOffsetRatio
-        
-        print(tennisCourtViewWidth, tennisCourtViewHeight, lineWidth, sidelineOffset, serviceLineOffset)
+        serviceLineOffset = tennisCourtViewWidth * serviceLineOffsetRatio        
     }
     
     func drawCourt() {
