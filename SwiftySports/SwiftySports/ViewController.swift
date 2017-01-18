@@ -8,18 +8,18 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, IceRinkViewDataSource {
+    @IBOutlet weak var iceRinkView: IceRinkView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        iceRinkView.dataSource = self
+        iceRinkView.drawToScale()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func widthForIceRink(_ iceRinkView: IceRinkView) -> CGFloat {
+        return 320.0
     }
-
 
 }
-
