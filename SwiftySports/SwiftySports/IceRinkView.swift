@@ -89,6 +89,11 @@ class IceRinkView: UIView {
             drawToScale()
         }
     }
+    var creaseColor: UIColor = UIColor.blue.withAlphaComponent(0.2) {
+        didSet {
+            drawToScale()
+        }
+    }
     
     // Setup temp
     private var iceRinkViewWidth: CGFloat = 0
@@ -384,7 +389,7 @@ class IceRinkView: UIView {
             // Bezier path to get that curve on the crease
             goal.path = returnGoalBezierPath().cgPath
             goal.strokeColor = redLineColor.cgColor
-            goal.fillColor = UIColor.blue.withAlphaComponent(0.2).cgColor
+            goal.fillColor = creaseColor.cgColor
             goal.position = CGPoint(x: 0, y: 0)
             goal.lineWidth = minorLineWidth * 0.5
         }

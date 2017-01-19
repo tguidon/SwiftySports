@@ -39,11 +39,11 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SaR-Qe-8An" customClass="SoccerFieldView" customModule="SwiftySports" customModuleProvider="target">
-                                <rect key="frame" x="134.5" y="399.5" width="105" height="68"/>
+                                <rect key="frame" x="27" y="399.5" width="320" height="207.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="68" id="3TC-Pv-z4R"/>
-                                    <constraint firstAttribute="width" constant="105" id="FdE-qQ-B5P"/>
+                                    <constraint firstAttribute="width" constant="320" id="FdE-qQ-B5P"/>
+                                    <constraint firstAttribute="width" secondItem="SaR-Qe-8An" secondAttribute="height" multiplier="105:68" id="tRt-8d-TKe"/>
                                 </constraints>
                             </view>
                         </subviews>
