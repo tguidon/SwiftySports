@@ -13,6 +13,11 @@ class ViewController: UIViewController, IceRinkViewDataSource, TennisCourtViewDa
     @IBOutlet weak var tennisCourtView: TennisCourtView!
     @IBOutlet weak var soccerFieldView: SoccerFieldView!
 
+    @IBOutlet weak var titleView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var swiftySportsView: UIView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
