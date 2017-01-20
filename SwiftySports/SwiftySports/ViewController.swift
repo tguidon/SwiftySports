@@ -8,9 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController, IceRinkViewDataSource, TennisCourtViewDataSource, SoccerFieldViewDataSource {
+class ViewController: UIViewController, IceRinkViewDataSource, TennisCourtViewDataSource, ProBasketballCourtViewDataSource, SoccerFieldViewDataSource {
     @IBOutlet weak var iceRinkView: IceRinkView!
     @IBOutlet weak var tennisCourtView: TennisCourtView!
+    @IBOutlet weak var proBasketballCourtView: ProBasketballCourtView!
     @IBOutlet weak var soccerFieldView: SoccerFieldView!
 
     @IBOutlet weak var titleView: UIView!
@@ -27,6 +28,9 @@ class ViewController: UIViewController, IceRinkViewDataSource, TennisCourtViewDa
         tennisCourtView.dataSource = self
         tennisCourtView.drawToScale()
         
+        proBasketballCourtView.dataSource = self
+        proBasketballCourtView.drawToScale()
+        
         soccerFieldView.dataSource = self
         soccerFieldView.drawToScale()
     }
@@ -37,6 +41,10 @@ class ViewController: UIViewController, IceRinkViewDataSource, TennisCourtViewDa
     
     func widthForCourt(_ tennisCourtView: TennisCourtView) -> CGFloat {
         return 320.0
+    }
+    
+    func widthForProCourt(_ proBasketballCourtView: ProBasketballCourtView) -> CGFloat {
+        return 94.0
     }
     
     func widthForSoccerField(_ soccerFieldView: SoccerFieldView) -> CGFloat {

@@ -143,8 +143,6 @@ class SoccerFieldView: UIView {
         
         let cornerWidthRatio: CGFloat = 2.5 / kRealFieldWidth
         cornerWidth = soccerFieldViewWidth * cornerWidthRatio
-        
-        print(areaCurveWidth, areaCurveHeight)
     }
     
     func drawField() {

@@ -22,7 +22,7 @@ class TennisCourtView: UIView {
     private let kRealCourtHeight: CGFloat = 36.0
     
     // UI
-    // tennisCourtView holds the rink's UI elements
+    // tennisCourtView holds the court's UI elements
     // dataView holds potential data overlays
     private let tennisCourtView = UIView()
     private let dataView = UIView()
