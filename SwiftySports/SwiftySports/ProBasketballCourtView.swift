@@ -90,6 +90,7 @@ class ProBasketballCourtView: UIView {
         halfCourtLines = [halfCourtLineView, halfCourtSmallCircleView, halfCourtLargeCircleView]
         
         self.backgroundColor = .clear
+        self.clipsToBounds = true
         
         setupConstants()
     }
@@ -119,8 +120,6 @@ class ProBasketballCourtView: UIView {
         homeAwayViewHeight = courtViewHeight * homeAwayViewHeightRatio
         let homeAwayStraightLineWidthRatio: CGFloat = 14 / kRealCourtWidth
         homeAwayStraightLineWidth = courtViewWidth * homeAwayStraightLineWidthRatio
-        
-        print(homeAwayViewWidth, homeAwayViewHeight, homeAwayStraightLineWidth)
     }
     
     func drawCourt() {
@@ -196,7 +195,7 @@ class ProBasketballCourtView: UIView {
         halfCourtLargeCircleView.layer.cornerRadius = largeCircleWidth / 2
         
         // add the home court
-        homeView.backgroundColor = .red
+        homeView.backgroundColor = .clear
         homeView.translatesAutoresizingMaskIntoConstraints = false
         proBasketballCourtView.addSubview(homeView)
         homeView.snp.makeConstraints { (make) in
@@ -209,7 +208,7 @@ class ProBasketballCourtView: UIView {
         homeShape.path = returnHomeAreaBezierPath().cgPath
         homeShape.strokeColor = lineColor.cgColor
         homeShape.fillColor = UIColor.clear.cgColor
-        homeShape.position = CGPoint(x: 0, y: 0)
+        homeShape.position = CGPoint(x: 0.5, y: 0.5)
         homeShape.lineWidth = lineWidth
         homeView.layer.addSublayer(homeShape)
         
@@ -218,12 +217,12 @@ class ProBasketballCourtView: UIView {
     
     func returnHomeAreaBezierPath() -> UIBezierPath {
         let bezierPath = UIBezierPath()
-        bezierPath.move(to: CGPoint(x: 0, y: 0))
-        bezierPath.addLine(to: CGPoint(x: homeAwayStraightLineWidth, y: 0))
-        bezierPath.addCurve(to: CGPoint(x: homeAwayViewWidth, y: homeAwayViewHeight / 1.5), controlPoint1: CGPoint(x: homeAwayStraightLineWidth, y: 0), controlPoint2: CGPoint(x: homeAwayViewWidth, y: 0))
-        bezierPath.addCurve(to: CGPoint(x: homeAwayStraightLineWidth, y: homeAwayViewHeight), controlPoint1: CGPoint(x: homeAwayViewWidth, y: homeAwayViewHeight), controlPoint2: CGPoint(x: homeAwayStraightLineWidth, y: homeAwayViewHeight))
-        bezierPath.addLine(to: CGPoint(x: 0, y: homeAwayViewHeight))
-        bezierPath.addLine(to: CGPoint(x: 0, y: 0))
+        bezierPath.move(to: CGPoint(x: 0.5, y: 0.5))
+        bezierPath.addLine(to: CGPoint(x: homeAwayStraightLineWidth, y: 0.5))
+        bezierPath.addCurve(to: CGPoint(x: homeAwayViewWidth, y: homeAwayViewHeight / 2), controlPoint1: CGPoint(x: homeAwayStraightLineWidth, y: 0.5), controlPoint2: CGPoint(x: homeAwayViewWidth, y: (homeAwayViewHeight * 0.125)))
+        bezierPath.addCurve(to: CGPoint(x: homeAwayStraightLineWidth, y: homeAwayViewHeight), controlPoint1: CGPoint(x: homeAwayViewWidth, y: (homeAwayViewHeight * 0.875)), controlPoint2: CGPoint(x: homeAwayStraightLineWidth, y: homeAwayViewHeight))
+        bezierPath.addLine(to: CGPoint(x: 0.5, y: homeAwayViewHeight))
+        bezierPath.addLine(to: CGPoint(x: 0.5, y: 0.5))
         bezierPath.close()
         
         return bezierPath

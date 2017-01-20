@@ -98,6 +98,7 @@ class SoccerFieldView: UIView {
         curveViews = [homeAreaCurveView, awayAreaCurveView]
 
         self.backgroundColor = fieldColor
+        self.clipsToBounds = true
         
         setupConstants()
     }

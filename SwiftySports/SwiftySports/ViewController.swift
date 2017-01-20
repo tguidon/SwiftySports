@@ -44,7 +44,7 @@ class ViewController: UIViewController, IceRinkViewDataSource, TennisCourtViewDa
     }
     
     func widthForProCourt(_ proBasketballCourtView: ProBasketballCourtView) -> CGFloat {
-        return 94.0
+        return 320.0
     }
     
     func widthForSoccerField(_ soccerFieldView: SoccerFieldView) -> CGFloat {
