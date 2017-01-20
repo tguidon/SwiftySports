@@ -50,6 +50,7 @@ class SoccerFieldView: UIView {
     private var fieldLines: [UIView] = []
     private var fieldDots: [UIView] = []
     private var cornerViews: [UIView] = []
+    private var curveViews: [UIView] = []
     
     // Colors with a redraw on set tp update view
     var fieldColor: UIColor = UIColor(red:0.55, green:0.84, blue:0.57, alpha:1.00) {
@@ -94,6 +95,7 @@ class SoccerFieldView: UIView {
                       homeGoalAreaView, awayGoalAreaView, homePenaltyAreaView, awayPenaltyAreaView]
         fieldDots = [centerCircleDotView, homePenaltyDotView, awayPenaltyDotView]
         cornerViews = [topLeftCornerView, bottomLeftCornerView, topRightCornerView, bottomRightCornerView]
+        curveViews = [homeAreaCurveView, awayAreaCurveView]
 
         self.backgroundColor = fieldColor
         
@@ -106,7 +108,7 @@ class SoccerFieldView: UIView {
         let penaltyDotOffsetRatio: CGFloat = 12 / kRealFieldWidth
         penaltyDotOffset = soccerFieldViewWidth * penaltyDotOffsetRatio
         
-        let lineWidthRatio: CGFloat = 0.5 / kRealFieldWidth
+        let lineWidthRatio: CGFloat = 0.7 / kRealFieldWidth
         lineWidth = soccerFieldViewWidth * lineWidthRatio
         
         let centerCircleWidthRatio: CGFloat = 20 / kRealFieldWidth
@@ -139,8 +141,10 @@ class SoccerFieldView: UIView {
         let areaCurveHeightRatio: CGFloat = 18 / kRealFieldHeight
         areaCurveHeight = soccerFieldViewHeight * areaCurveHeightRatio
         
-        let cornerWidthRatio: CGFloat = 1.5 / kRealFieldWidth
+        let cornerWidthRatio: CGFloat = 2.5 / kRealFieldWidth
         cornerWidth = soccerFieldViewWidth * cornerWidthRatio
+        
+        print(areaCurveWidth, areaCurveHeight)
     }
     
     func drawField() {
@@ -257,54 +261,111 @@ class SoccerFieldView: UIView {
         centerCircleView.layer.cornerRadius = centerCircleWidth / 2
         centerCircleDotView.layer.cornerRadius = centerCircleDotWidth / 2
         
-//        let homeGoalShapeLayer = CAShapeLayer()
-//        let awayGoalShapeLayer = CAShapeLayer()
-//        let goalShapeLayers: [CAShapeLayer] = [homeGoalShapeLayer, awayGoalShapeLayer]
-//        for goal in goalShapeLayers {
-//            // Bezier path to get that curve on the crease
-//            goal.path = returnGoalBezierPath().cgPath
-//            goal.strokeColor = redLineColor.cgColor
-//            goal.fillColor = creaseColor.cgColor
-//            goal.position = CGPoint(x: 0, y: 0)
-//            goal.lineWidth = minorLineWidth * 0.5
-//        }
-//        homeCrease.layer.addSublayer(homeGoalShapeLayer)
-//        awayCrease.layer.addSublayer(awayGoalShapeLayer)
-        
         // add the corners
         for corner in cornerViews {
             corner.backgroundColor = .clear
             corner.translatesAutoresizingMaskIntoConstraints = false
             soccerFieldView.addSubview(corner)
         }
-        bottomLeftCornerView.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(lineWidth / 2)
-            make.bottom.equalToSuperview().offset(-lineWidth / 2)
+        topLeftCornerView.snp.makeConstraints { (make) in
+            make.left.equalToSuperview()
+            make.top.equalToSuperview()
             make.width.equalTo(cornerWidth)
             make.height.equalTo(cornerWidth)
         }
-//        for corner in cornerViews {
-            let shape = CAShapeLayer()
-            shape.path = returnCornerBezierPath().cgPath
-            shape.strokeColor = lineColor.cgColor
-            shape.fillColor = UIColor.clear.cgColor
-            shape.position = CGPoint(x: 0, y: 0)
-            shape.lineWidth = lineWidth
-//            corner.layer.addSublayer(shape)
-//        }
-        bottomLeftCornerView.layer.addSublayer(shape)
-
+        bottomLeftCornerView.snp.makeConstraints { (make) in
+            make.left.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.width.equalTo(cornerWidth)
+            make.height.equalTo(cornerWidth)
+        }
+        topRightCornerView.snp.makeConstraints { (make) in
+            make.right.equalToSuperview()
+            make.top.equalToSuperview()
+            make.width.equalTo(cornerWidth)
+            make.height.equalTo(cornerWidth)
+        }
+        bottomRightCornerView.snp.makeConstraints { (make) in
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.width.equalTo(cornerWidth)
+            make.height.equalTo(cornerWidth)
+        }
+        let topLeftShape = CAShapeLayer()
+        let bottomLeftShape = CAShapeLayer()
+        let topRightShape = CAShapeLayer()
+        let bottomRightShape = CAShapeLayer()
+        let cornerShapes = [topLeftShape, bottomLeftShape, topRightShape, bottomRightShape]
+        for corner in cornerShapes {
+            corner.path = returnCornerBezierPath().cgPath
+            corner.strokeColor = lineColor.cgColor
+            corner.fillColor = UIColor.clear.cgColor
+            corner.position = CGPoint(x: 0, y: 0)
+            corner.lineWidth = lineWidth
+        }
+        topLeftCornerView.layer.addSublayer(topLeftShape)
+        bottomLeftCornerView.layer.addSublayer(bottomLeftShape)
+        topRightCornerView.layer.addSublayer(topRightShape)
+        bottomRightCornerView.layer.addSublayer(bottomRightShape)
+        topLeftCornerView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
+        topRightCornerView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+        bottomRightCornerView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2 * 3))
+        
+        // add the curve right outside the penalty and goal
+        for curve in curveViews {
+            curve.backgroundColor = .clear
+            curve.translatesAutoresizingMaskIntoConstraints = false
+            soccerFieldView.addSubview(curve)
+        }
+        homeAreaCurveView.snp.makeConstraints { (make) in
+            make.width.equalTo(areaCurveWidth)
+            make.height.equalTo(areaCurveHeight)
+            make.left.equalTo(homePenaltyAreaView.snp.right).offset(-lineWidth / 2)
+            make.centerY.equalToSuperview()
+        }
+        awayAreaCurveView.snp.makeConstraints { (make) in
+            make.width.equalTo(areaCurveWidth)
+            make.height.equalTo(areaCurveHeight)
+            make.right.equalTo(awayPenaltyAreaView.snp.left).offset(lineWidth / 2)
+            make.centerY.equalToSuperview()
+        }
+        
+        
+        let homeCurveShape = CAShapeLayer()
+        let awayCurveShape = CAShapeLayer()
+        let curveShapes = [homeCurveShape, awayCurveShape]
+        for curve in curveShapes {
+            curve.path = returnGoalCurveBezierPath().cgPath
+            curve.strokeColor = lineColor.cgColor
+            curve.fillColor = UIColor.clear.cgColor
+            curve.position = CGPoint(x: 0, y: 0)
+            curve.lineWidth = lineWidth
+        }
+        homeAreaCurveView.layer.addSublayer(homeCurveShape)
+        awayAreaCurveView.layer.addSublayer(awayCurveShape)
+        awayAreaCurveView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
     }
     
     func returnCornerBezierPath() -> UIBezierPath {
         let cornerPath = UIBezierPath()
-        cornerPath.move(to: CGPoint(x: 0, y: 0))
-        cornerPath.addLine(to: CGPoint(x: 0, y: cornerWidth))
-        cornerPath.addLine(to: CGPoint(x: cornerWidth, y: cornerWidth))
-        cornerPath.addCurve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: cornerWidth, y: cornerWidth), controlPoint2: CGPoint(x: cornerWidth, y: 0))
+        cornerPath.move(to: CGPoint(x: 1, y: 1))
+        cornerPath.addLine(to: CGPoint(x: 1, y: cornerWidth - 1))
+        cornerPath.addLine(to: CGPoint(x: cornerWidth - 1, y: cornerWidth - 1))
+        cornerPath.addCurve(to: CGPoint(x: 1, y: 1), controlPoint1: CGPoint(x: cornerWidth - 1, y: cornerWidth - 1), controlPoint2: CGPoint(x: cornerWidth - 1, y: 1))
         cornerPath.close()
         
         return cornerPath
+    }
+    
+    func returnGoalCurveBezierPath() -> UIBezierPath {
+        let bezierPath = UIBezierPath()
+        bezierPath.move(to: CGPoint(x: 0, y: 0))
+        bezierPath.addCurve(to: CGPoint(x: 0, y: areaCurveHeight), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 0, y: areaCurveHeight))
+        bezierPath.addCurve(to: CGPoint(x: areaCurveWidth, y: areaCurveHeight / 2), controlPoint1: CGPoint(x: 0, y: areaCurveHeight), controlPoint2: CGPoint(x: areaCurveWidth, y: areaCurveHeight * (15/18)))
+        bezierPath.addCurve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: areaCurveWidth, y: areaCurveHeight * (4/18)), controlPoint2: CGPoint(x: 0, y: 0))
+        bezierPath.close()
+        
+        return bezierPath
     }
     
     func drawToScale() {

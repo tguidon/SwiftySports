@@ -77,7 +77,7 @@ class TennisCourtView: UIView {
     func setupConstants() {
         tennisCourtViewHeight = tennisCourtViewWidth * (6 / 13)
         
-        let lineWidthRatio: CGFloat = 1.0 / kRealCourtWidth
+        let lineWidthRatio: CGFloat = 0.65 / kRealCourtWidth
         lineWidth = tennisCourtViewWidth * lineWidthRatio
         
         let sidelineOffsetRatio: CGFloat = 4.5 / kRealCourtHeight
