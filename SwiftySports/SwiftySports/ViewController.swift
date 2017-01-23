@@ -35,6 +35,10 @@ class ViewController: UIViewController, IceRinkViewDataSource, TennisCourtViewDa
         soccerFieldView.drawToScale()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+    
     func widthForRink(_ iceRinkView: IceRinkView) -> CGFloat {
         return 320.0
     }
