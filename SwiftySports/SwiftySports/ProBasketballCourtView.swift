@@ -33,15 +33,23 @@ class ProBasketballCourtView: UIView {
     private let homeView = UIView()
     private let awayView = UIView()
     
-    // court
+    // home court
     private let homeSmallBoxView = UIView()
     private let homeLargeBoxView = UIView()
     private let homeCircleView = UIView()
-    private let homeTopBoxHashmarkView = UIView()
-    private let homeBottomBoxHashmarkView = UIView()
     private let homeBackboardView = UIView()
     private let homeHoopView = UIView()
+    private let homeTopBoxHashmarkView = UIView()
+    private let homeBottomBoxHashmarkView = UIView()
     
+    // away court
+    private let awaySmallBoxView = UIView()
+    private let awayLargeBoxView = UIView()
+    private let awayCircleView = UIView()
+    private let awayBackboardView = UIView()
+    private let awayHoopView = UIView()
+    private let awayTopBoxHashmarkView = UIView()
+    private let awayBottomBoxHashmarkView = UIView()
     
     // hash
     private let topLeftHashMarkView = UIView()
@@ -57,6 +65,8 @@ class ProBasketballCourtView: UIView {
     private var halfCourtLines: [UIView] = []
     private var homeCourtLines: [UIView] = []
     private var homeCourtHashMarks: [UIView] = []
+    private var awayCourtLines: [UIView] = []
+    private var awayCourtHashMarks: [UIView] = []
     
     
     // colors
@@ -85,7 +95,6 @@ class ProBasketballCourtView: UIView {
     private var courtViewWidth: CGFloat = 0
     private var courtViewHeight: CGFloat = 0
     
-    
     private var lineWidth: CGFloat = 0
     private var smallCircleWidth: CGFloat = 0
     private var largeCircleWidth: CGFloat = 0
@@ -100,13 +109,8 @@ class ProBasketballCourtView: UIView {
     private var backboardHeight: CGFloat = 0
     
     private var hashMarkOffset: CGFloat = 0
-    
     private var backboardOffset: CGFloat = 0
     private var boxHashOffset: CGFloat = 0
-    
-    
-    
-    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -115,6 +119,8 @@ class ProBasketballCourtView: UIView {
         halfCourtLines = [halfCourtLineView, halfCourtSmallCircleView, halfCourtLargeCircleView]
         homeCourtLines = [homeSmallBoxView, homeLargeBoxView, homeBackboardView, homeHoopView, homeCircleView]
         homeCourtHashMarks = [homeTopBoxHashmarkView, homeBottomBoxHashmarkView]
+        awayCourtLines = [awaySmallBoxView, awayLargeBoxView, awayBackboardView, awayHoopView, awayCircleView]
+        awayCourtHashMarks = [awayTopBoxHashmarkView, awayBottomBoxHashmarkView]
         
         self.backgroundColor = .clear
         self.clipsToBounds = true
@@ -238,7 +244,8 @@ class ProBasketballCourtView: UIView {
         halfCourtSmallCircleView.layer.cornerRadius = smallCircleWidth / 2
         halfCourtLargeCircleView.layer.cornerRadius = largeCircleWidth / 2
         
-        // add the home court
+        
+        // add the home and away court
         homeView.backgroundColor = .clear
         homeView.translatesAutoresizingMaskIntoConstraints = false
         proBasketballCourtView.addSubview(homeView)
@@ -252,18 +259,44 @@ class ProBasketballCourtView: UIView {
         homeShape.path = returnHomeAreaBezierPath().cgPath
         homeShape.strokeColor = lineColor.cgColor
         homeShape.fillColor = UIColor.clear.cgColor
-        homeShape.position = CGPoint(x: 0.5, y: 0.5)
+        homeShape.position = CGPoint(x: 0, y: 0)
         homeShape.lineWidth = lineWidth
         homeView.layer.addSublayer(homeShape)
         
-        // boxes
-        for box in homeCourtLines {
-            box.backgroundColor = .clear
-            box.translatesAutoresizingMaskIntoConstraints = false
-            box.layer.borderColor = lineColor.cgColor
-            box.layer.borderWidth = lineWidth
-            homeView.addSubview(box)
+        awayView.backgroundColor = .clear
+        awayView.translatesAutoresizingMaskIntoConstraints = false
+        proBasketballCourtView.addSubview(awayView)
+        awayView.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.right.equalToSuperview()
+            make.width.equalTo(homeAwayViewWidth)
+            make.height.equalTo(homeAwayViewHeight)
         }
+        let awayShape = CAShapeLayer()
+        awayShape.path = returnAwayAreaBezierPath().cgPath
+        awayShape.strokeColor = lineColor.cgColor
+        awayShape.fillColor = UIColor.clear.cgColor
+        awayShape.position = CGPoint(x: 0.5, y: 0.5)
+        awayShape.lineWidth = lineWidth
+        awayView.layer.addSublayer(awayShape)
+        
+        // add all lines
+        for line in homeCourtLines {
+            line.backgroundColor = .clear
+            line.translatesAutoresizingMaskIntoConstraints = false
+            line.layer.borderColor = lineColor.cgColor
+            line.layer.borderWidth = lineWidth
+            homeView.addSubview(line)
+        }
+        for line in awayCourtLines {
+            line.backgroundColor = .clear
+            line.translatesAutoresizingMaskIntoConstraints = false
+            line.layer.borderColor = lineColor.cgColor
+            line.layer.borderWidth = lineWidth
+            awayView.addSubview(line)
+        }
+        
+        // boxes
         homeLargeBoxView.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.centerY.equalToSuperview()
@@ -276,12 +309,29 @@ class ProBasketballCourtView: UIView {
             make.width.equalTo(boxWidth)
             make.height.equalTo(smallBoxHeight)
         }
+        awayLargeBoxView.snp.makeConstraints { (make) in
+            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.equalTo(boxWidth)
+            make.height.equalTo(largeBoxHeight)
+        }
+        awaySmallBoxView.snp.makeConstraints { (make) in
+            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.equalTo(boxWidth)
+            make.height.equalTo(smallBoxHeight)
+        }
         
         // hashmarks
         for hash in homeCourtHashMarks {
             hash.backgroundColor = .clear
             hash.translatesAutoresizingMaskIntoConstraints = false
             homeView.addSubview(hash)
+        }
+        for hash in awayCourtHashMarks {
+            hash.backgroundColor = .clear
+            hash.translatesAutoresizingMaskIntoConstraints = false
+            awayView.addSubview(hash)
         }
         homeTopBoxHashmarkView.snp.makeConstraints { (make) in
             make.left.equalTo(homeLargeBoxView.snp.left)
@@ -295,6 +345,19 @@ class ProBasketballCourtView: UIView {
             make.width.equalTo(homeLargeBoxView.snp.width)
             make.height.equalTo(hashMarkHeight / 2)
         }
+        awayTopBoxHashmarkView.snp.makeConstraints { (make) in
+            make.left.equalTo(awayLargeBoxView.snp.left)
+            make.bottom.equalTo(awayLargeBoxView.snp.top)
+            make.width.equalTo(awayLargeBoxView.snp.width)
+            make.height.equalTo(hashMarkHeight / 2)
+        }
+        awayBottomBoxHashmarkView.snp.makeConstraints { (make) in
+            make.left.equalTo(awayLargeBoxView.snp.left)
+            make.top.equalTo(awayLargeBoxView.snp.bottom)
+            make.width.equalTo(awayLargeBoxView.snp.width)
+            make.height.equalTo(hashMarkHeight / 2)
+        }
+        
         // add the hashmarks to the views
         for i in 0...1 {
             var v: UIView?
@@ -333,11 +396,54 @@ class ProBasketballCourtView: UIView {
             
         }
         
+        for i in 0...1 {
+            var v: UIView?
+            if i == 0 {
+                v = awayTopBoxHashmarkView
+            } else if i == 1 {
+                v = awayBottomBoxHashmarkView
+            }
+            for i in 0...3 {
+                let h = UIView()
+                h.backgroundColor = .clear
+                h.translatesAutoresizingMaskIntoConstraints = false
+                h.layer.borderColor = lineColor.cgColor
+                h.layer.borderWidth = lineWidth
+                guard let hashMarkView = v else {
+                    print("not a view")
+                    return
+                }
+                hashMarkView.addSubview(h)
+                
+                h.snp.makeConstraints({ (make) in
+                    make.width.equalTo(lineWidth)
+                    make.bottom.equalToSuperview()
+                    make.top.equalToSuperview()
+                    if i == 0 {
+                        make.right.equalToSuperview().offset((backboardOffset + boxHashOffset) * -1)
+                    } else if i == 1 {
+                        make.right.equalToSuperview().offset((backboardOffset + boxHashOffset + (boxHashOffset / 3)) * -1)
+                    } else if i == 2 {
+                        make.right.equalToSuperview().offset((backboardOffset + (boxHashOffset * 2) + (boxHashOffset / 3)) * -1)
+                    } else if i == 3 {
+                        make.right.equalToSuperview().offset((backboardOffset + (boxHashOffset * 3) + (boxHashOffset / 3)) * -1)
+                    }
+                })
+            }
+            
+        }
+        
         // add the backboard and hoop
         homeBackboardView.snp.makeConstraints { (make) in
             make.width.equalTo(lineWidth)
             make.height.equalTo(backboardHeight)
             make.left.equalTo(self.snp.left).offset(backboardOffset)
+            make.centerY.equalToSuperview()
+        }
+        awayBackboardView.snp.makeConstraints { (make) in
+            make.width.equalTo(lineWidth)
+            make.height.equalTo(backboardHeight)
+            make.right.equalTo(self.snp.right).offset(-backboardOffset)
             make.centerY.equalToSuperview()
         }
         homeHoopView.snp.makeConstraints { (make) in
@@ -346,9 +452,18 @@ class ProBasketballCourtView: UIView {
             make.left.equalTo(homeBackboardView.snp.right)
             make.centerY.equalToSuperview()
         }
+        awayHoopView.snp.makeConstraints { (make) in
+            make.width.equalTo(hoopWidth)
+            make.height.equalTo(hoopWidth)
+            make.right.equalTo(awayBackboardView.snp.left)
+            make.centerY.equalToSuperview()
+        }
         homeBackboardView.layer.borderWidth = lineWidth
+        awayBackboardView.layer.borderWidth = lineWidth
         homeHoopView.layer.borderWidth = lineWidth
         homeHoopView.layer.cornerRadius = hoopWidth / 2
+        awayHoopView.layer.borderWidth = lineWidth
+        awayHoopView.layer.cornerRadius = hoopWidth / 2
         
         // add the foul line circle
         homeCircleView.snp.makeConstraints { (make) in
@@ -357,34 +472,43 @@ class ProBasketballCourtView: UIView {
             make.width.equalTo(largeCircleWidth)
             make.height.equalTo(largeCircleWidth)
         }
+        awayCircleView.snp.makeConstraints { (make) in
+            make.centerX.equalTo(awayLargeBoxView.snp.left).offset(lineWidth / 2)
+            make.centerY.equalToSuperview()
+            make.width.equalTo(largeCircleWidth)
+            make.height.equalTo(largeCircleWidth)
+        }
         homeCircleView.layer.cornerRadius = largeCircleWidth / 2
-        
-        
-        // add the away court which is a flip of home
+        awayCircleView.layer.cornerRadius = largeCircleWidth / 2
     }
     
     func returnHomeAreaBezierPath() -> UIBezierPath {
         let bezierPath = UIBezierPath()
-        bezierPath.move(to: CGPoint(x: 0.5, y: 0.5))
-        bezierPath.addLine(to: CGPoint(x: homeAwayStraightLineWidth, y: 0.5))
-        bezierPath.addCurve(to: CGPoint(x: homeAwayViewWidth, y: homeAwayViewHeight / 2), controlPoint1: CGPoint(x: homeAwayStraightLineWidth, y: 0.5), controlPoint2: CGPoint(x: homeAwayViewWidth, y: (homeAwayViewHeight * 0.125)))
+        bezierPath.move(to: CGPoint(x: 0, y: 0))
+        bezierPath.addLine(to: CGPoint(x: homeAwayStraightLineWidth, y: 0))
+        bezierPath.addCurve(to: CGPoint(x: homeAwayViewWidth, y: homeAwayViewHeight / 2), controlPoint1: CGPoint(x: homeAwayStraightLineWidth, y: 0), controlPoint2: CGPoint(x: homeAwayViewWidth, y: (homeAwayViewHeight * 0.125)))
         bezierPath.addCurve(to: CGPoint(x: homeAwayStraightLineWidth, y: homeAwayViewHeight), controlPoint1: CGPoint(x: homeAwayViewWidth, y: (homeAwayViewHeight * 0.875)), controlPoint2: CGPoint(x: homeAwayStraightLineWidth, y: homeAwayViewHeight))
-        bezierPath.addLine(to: CGPoint(x: 0.5, y: homeAwayViewHeight))
-        bezierPath.addLine(to: CGPoint(x: 0.5, y: 0.5))
+        bezierPath.addLine(to: CGPoint(x: 0, y: homeAwayViewHeight))
+        bezierPath.addLine(to: CGPoint(x: 0, y: 0))
         bezierPath.close()
         
         return bezierPath
     }
     
+    func returnAwayAreaBezierPath() -> UIBezierPath {        
+        let bezierPath = UIBezierPath()
+        bezierPath.move(to: CGPoint(x: homeAwayViewWidth, y: 0))
+        bezierPath.addLine(to: CGPoint(x: homeAwayViewWidth - homeAwayStraightLineWidth, y: 0))
+        bezierPath.addCurve(to: CGPoint(x: 0, y: homeAwayViewHeight / 2), controlPoint1: CGPoint(x: homeAwayViewWidth - homeAwayStraightLineWidth, y: 0), controlPoint2: CGPoint(x: 0, y: homeAwayViewHeight * 0.125))
+        bezierPath.addCurve(to: CGPoint(x: homeAwayViewWidth - homeAwayStraightLineWidth, y: homeAwayViewHeight), controlPoint1: CGPoint(x: 0, y: homeAwayViewHeight * 0.875), controlPoint2: CGPoint(x: homeAwayViewWidth - homeAwayStraightLineWidth, y: homeAwayViewHeight))
+        bezierPath.addLine(to: CGPoint(x: homeAwayViewWidth, y: homeAwayViewHeight))
+        bezierPath.addLine(to: CGPoint(x: homeAwayViewWidth, y: 0))
+        bezierPath.close()
+    
+        return bezierPath
+    }
+    
     func returnFreeThrowCurveBezierPath() -> UIBezierPath {
-//        let bezierPath = UIBezierPath()
-//        let widthOffset: CGFloat = lineWidth / 2
-//        bezierPath.move(to: CGPoint(x: -widthOffset / 2, y: widthOffset))
-//        bezierPath.addCurve(to: CGPoint(x: largeCircleWidth / 2, y: largeCircleWidth / 2), controlPoint1: CGPoint(x: widthOffset, y: widthOffset), controlPoint2: CGPoint(x: largeCircleWidth / 2, y: widthOffset))
-//        bezierPath.addCurve(to: CGPoint(x: widthOffset, y: largeCircleWidth), controlPoint1: CGPoint(x: largeCircleWidth / 2, y: largeCircleWidth), controlPoint2: CGPoint(x: widthOffset, y: largeCircleWidth))
-//        bezierPath.stroke()
-        
-        
 //        let bezierPath = UIBezierPath()
 //        bezierPath.move(to: CGPoint(x: 0, y: 1.5))
 //        bezierPath.addCurve(to: CGPoint(x: 58.5, y: 60), controlPoint1: CGPoint(x: 0, y: 1.5), controlPoint2: CGPoint(x: 58.5, y: 1.01))
