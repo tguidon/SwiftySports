@@ -36,8 +36,7 @@ class ProBasketballCourtView: UIView {
     // court
     private let homeSmallBoxView = UIView()
     private let homeLargeBoxView = UIView()
-    private let homeDashedSemiCircleView = UIView()
-    private let homeSemiCircleView = UIView()
+    private let homeCircleView = UIView()
     private let homeTopBoxHashmarkView = UIView()
     private let homeBottomBoxHashmarkView = UIView()
     private let homeBackboardView = UIView()
@@ -58,7 +57,6 @@ class ProBasketballCourtView: UIView {
     private var halfCourtLines: [UIView] = []
     private var homeCourtLines: [UIView] = []
     private var homeCourtHashMarks: [UIView] = []
-    private var homeCourtCircles: [UIView] = []
     
     
     // colors
@@ -115,9 +113,8 @@ class ProBasketballCourtView: UIView {
         
         hashMarkLines = [topLeftHashMarkView, bottomLeftHashMarkView, topRightHashMarkView, bottomRightHashMarkView]
         halfCourtLines = [halfCourtLineView, halfCourtSmallCircleView, halfCourtLargeCircleView]
-        homeCourtLines = [homeSmallBoxView, homeLargeBoxView, homeBackboardView, homeHoopView]
+        homeCourtLines = [homeSmallBoxView, homeLargeBoxView, homeBackboardView, homeHoopView, homeCircleView]
         homeCourtHashMarks = [homeTopBoxHashmarkView, homeBottomBoxHashmarkView]
-        homeCourtCircles = [homeDashedSemiCircleView, homeSemiCircleView]
         
         self.backgroundColor = .clear
         self.clipsToBounds = true
@@ -354,27 +351,16 @@ class ProBasketballCourtView: UIView {
         homeHoopView.layer.cornerRadius = hoopWidth / 2
         
         // add the foul line circle
-        for circle in homeCourtCircles {
-            circle.backgroundColor = .clear
-            circle.translatesAutoresizingMaskIntoConstraints = false
-            homeView.addSubview(circle)
-        }
-        homeDashedSemiCircleView.backgroundColor = .red
-        homeSemiCircleView.backgroundColor = .blue
-        homeDashedSemiCircleView.snp.makeConstraints { (make) in
-            make.width.equalTo(largeCircleWidth / 2)
-            make.height.equalTo(largeCircleWidth)
+        homeCircleView.snp.makeConstraints { (make) in
+            make.centerX.equalTo(homeLargeBoxView.snp.right).offset(-lineWidth / 2)
             make.centerY.equalToSuperview()
-            make.left.equalTo(homeLargeBoxView.snp.right).offset((-largeCircleWidth / 2) + (-lineWidth / 2))
-        }
-        homeSemiCircleView.snp.makeConstraints { (make) in
-            make.width.equalTo(largeCircleWidth / 2)
+            make.width.equalTo(largeCircleWidth)
             make.height.equalTo(largeCircleWidth)
-            make.centerY.equalToSuperview()
-            make.left.equalTo(homeLargeBoxView.snp.right).offset((-lineWidth / 2))
         }
+        homeCircleView.layer.cornerRadius = largeCircleWidth / 2
         
-        // add the away court which is a flip of
+        
+        // add the away court which is a flip of home
     }
     
     func returnHomeAreaBezierPath() -> UIBezierPath {
@@ -386,6 +372,37 @@ class ProBasketballCourtView: UIView {
         bezierPath.addLine(to: CGPoint(x: 0.5, y: homeAwayViewHeight))
         bezierPath.addLine(to: CGPoint(x: 0.5, y: 0.5))
         bezierPath.close()
+        
+        return bezierPath
+    }
+    
+    func returnFreeThrowCurveBezierPath() -> UIBezierPath {
+//        let bezierPath = UIBezierPath()
+//        let widthOffset: CGFloat = lineWidth / 2
+//        bezierPath.move(to: CGPoint(x: -widthOffset / 2, y: widthOffset))
+//        bezierPath.addCurve(to: CGPoint(x: largeCircleWidth / 2, y: largeCircleWidth / 2), controlPoint1: CGPoint(x: widthOffset, y: widthOffset), controlPoint2: CGPoint(x: largeCircleWidth / 2, y: widthOffset))
+//        bezierPath.addCurve(to: CGPoint(x: widthOffset, y: largeCircleWidth), controlPoint1: CGPoint(x: largeCircleWidth / 2, y: largeCircleWidth), controlPoint2: CGPoint(x: widthOffset, y: largeCircleWidth))
+//        bezierPath.stroke()
+        
+        
+//        let bezierPath = UIBezierPath()
+//        bezierPath.move(to: CGPoint(x: 0, y: 1.5))
+//        bezierPath.addCurve(to: CGPoint(x: 58.5, y: 60), controlPoint1: CGPoint(x: 0, y: 1.5), controlPoint2: CGPoint(x: 58.5, y: 1.01))
+//        bezierPath.addCurve(to: CGPoint(x: 0, y: 118.5), controlPoint1: CGPoint(x: 58.5, y: 118.99), controlPoint2: CGPoint(x: 0, y: 118.5))
+//        UIColor.black.setStroke()
+//        bezierPath.lineWidth = 3
+//        bezierPath.stroke()
+        
+//        let lineOffset: CGFloat = lineWidth / 2
+//        let halfLargeCircleWidth = largeCircleWidth / 2
+//        let halfWithOffset = halfLargeCircleWidth - lineOffset
+//        let fullWithOffset = largeCircleWidth - lineOffset
+//        
+        let bezierPath = UIBezierPath()
+//        bezierPath.move(to: CGPoint(x: 0, y: lineOffset))
+//        bezierPath.addCurve(to: CGPoint(x: halfWithOffset, y: halfLargeCircleWidth), controlPoint1: CGPoint(x: 0, y: lineOffset), controlPoint2: CGPoint(x: halfWithOffset, y: lineOffset))
+//        bezierPath.addCurve(to: CGPoint(x: 0, y: fullWithOffset), controlPoint1: CGPoint(x: halfWithOffset, y: largeCircleWidth), controlPoint2: CGPoint(x: 0, y: fullWithOffset))
+//        bezierPath.stroke()
         
         return bezierPath
     }
