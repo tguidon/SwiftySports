@@ -18,6 +18,10 @@
 		E81C33CF1E2F100E0052DC0C /* FootballFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81C33CE1E2F100E0052DC0C /* FootballFieldView.swift */; };
 		E8A1FCAB1E3291F3009E2147 /* ProBasketballCourtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A1FCAA1E3291F3009E2147 /* ProBasketballCourtView.swift */; };
 		E8FE19881E393141002BEF7D /* TennisCourt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FE19871E393141002BEF7D /* TennisCourt.swift */; };
+		E8FE198A1E393A7A002BEF7D /* IceRink.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FE19891E393A7A002BEF7D /* IceRink.swift */; };
+		E8FE198C1E393AB4002BEF7D /* SoccerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FE198B1E393AB4002BEF7D /* SoccerField.swift */; };
+		E8FE198E1E393AC8002BEF7D /* ProBasketballCourt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FE198D1E393AC8002BEF7D /* ProBasketballCourt.swift */; };
+		E8FE19901E393AD6002BEF7D /* FootballField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FE198F1E393AD6002BEF7D /* FootballField.swift */; };
 		F7C82AF5DA6ADF2A533223D2 /* Pods_SwiftySports.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FE63555294836F49BEC7ED7 /* Pods_SwiftySports.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +42,10 @@
 		E81C33CE1E2F100E0052DC0C /* FootballFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FootballFieldView.swift; sourceTree = "<group>"; };
 		E8A1FCAA1E3291F3009E2147 /* ProBasketballCourtView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProBasketballCourtView.swift; sourceTree = "<group>"; };
 		E8FE19871E393141002BEF7D /* TennisCourt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TennisCourt.swift; sourceTree = "<group>"; };
+		E8FE19891E393A7A002BEF7D /* IceRink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IceRink.swift; sourceTree = "<group>"; };
+		E8FE198B1E393AB4002BEF7D /* SoccerField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoccerField.swift; sourceTree = "<group>"; };
+		E8FE198D1E393AC8002BEF7D /* ProBasketballCourt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProBasketballCourt.swift; sourceTree = "<group>"; };
+		E8FE198F1E393AD6002BEF7D /* FootballField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FootballField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +116,7 @@
 		E8FE19801E385257002BEF7D /* IceRink */ = {
 			isa = PBXGroup;
 			children = (
+				E8FE19891E393A7A002BEF7D /* IceRink.swift */,
 				E81C33C81E2EE7C50052DC0C /* IceRinkView.swift */,
 			);
 			name = IceRink;
@@ -125,6 +134,7 @@
 		E8FE19821E385278002BEF7D /* SoccerField */ = {
 			isa = PBXGroup;
 			children = (
+				E8FE198B1E393AB4002BEF7D /* SoccerField.swift */,
 				E81C33CC1E2F0F620052DC0C /* SoccerFieldView.swift */,
 			);
 			name = SoccerField;
@@ -134,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				E81C33CE1E2F100E0052DC0C /* FootballFieldView.swift */,
+				E8FE198F1E393AD6002BEF7D /* FootballField.swift */,
 			);
 			name = FootballField;
 			sourceTree = "<group>";
@@ -142,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				E8A1FCAA1E3291F3009E2147 /* ProBasketballCourtView.swift */,
+				E8FE198D1E393AC8002BEF7D /* ProBasketballCourt.swift */,
 			);
 			name = ProBasketballCourt;
 			sourceTree = "<group>";
@@ -271,11 +283,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				E81C33CD1E2F0F620052DC0C /* SoccerFieldView.swift in Sources */,
+				E8FE198E1E393AC8002BEF7D /* ProBasketballCourt.swift in Sources */,
+				E8FE198C1E393AB4002BEF7D /* SoccerField.swift in Sources */,
 				E8FE19881E393141002BEF7D /* TennisCourt.swift in Sources */,
+				E8FE198A1E393A7A002BEF7D /* IceRink.swift in Sources */,
 				E81C33C91E2EE7C50052DC0C /* IceRinkView.swift in Sources */,
 				E81C33CB1E2EF52E0052DC0C /* TennisCourtView.swift in Sources */,
 				E81C33B91E2EE4AF0052DC0C /* ViewController.swift in Sources */,
 				E81C33CF1E2F100E0052DC0C /* FootballFieldView.swift in Sources */,
+				E8FE19901E393AD6002BEF7D /* FootballField.swift in Sources */,
 				E81C33B71E2EE4AF0052DC0C /* AppDelegate.swift in Sources */,
 				E8A1FCAB1E3291F3009E2147 /* ProBasketballCourtView.swift in Sources */,
 			);
