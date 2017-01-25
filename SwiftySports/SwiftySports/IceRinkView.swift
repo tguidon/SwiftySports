@@ -84,7 +84,7 @@ class IceRinkView: UIView {
             drawToScale()
         }
     }
-    var boardColor: UIColor = UIColor(red:0.27, green:0.27, blue:0.32, alpha:1.00) {
+    var boardColor: UIColor = UIColor(red:0.32, green:0.63, blue:0.82, alpha:1.00) {
         didSet {
             drawToScale()
         }
