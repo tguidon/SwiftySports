@@ -44,9 +44,7 @@ class IceRink {
     
     func updateConstants() {
         height = width * (17 / 40)
-        
-        print(width, height)
-        
+                
         rinkCornerRatio = 28.0 / kRealRinkWidth
         boardWidthRatio = 1.5 / kRealRinkWidth
         

@@ -16,10 +16,7 @@ protocol SoccerFieldViewDataSource {
 class SoccerFieldView: UIView {
     
     var dataSource: SoccerFieldViewDataSource?
-    
-    // Don't change these constants, used for ratios
-    private let kRealFieldWidth: CGFloat = 105.0
-    private let kRealFieldHeight: CGFloat = 68.0
+    let soccerField = SoccerField()
     
     // UI
     // soccerFieldView holds the rink's UI elements
@@ -64,29 +61,6 @@ class SoccerFieldView: UIView {
         }
     }
     
-    // Setup temp
-    private var soccerFieldViewWidth: CGFloat = 0
-    private var soccerFieldViewHeight: CGFloat = 0
-    
-    // offset
-    private var soccerFieldOffset: CGFloat = 0
-    private var penaltyDotOffset: CGFloat = 0
-    
-    // UI widths
-    private var lineWidth: CGFloat = 1
-    private var centerCircleWidth: CGFloat = 1
-    private var centerCircleDotWidth: CGFloat = 1
-    private var goalWidth: CGFloat = 1
-    private var goalHeight: CGFloat = 1
-    private var goalAreaWidth: CGFloat = 1
-    private var goalAreaHeight: CGFloat = 1
-    private var penaltyAreaWidth: CGFloat = 1
-    private var penaltyAreaHeight: CGFloat = 1
-    private var areaCurveWidth: CGFloat = 1
-    private var areaCurveHeight: CGFloat = 1
-    private var cornerWidth: CGFloat = 1
-    
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -99,51 +73,6 @@ class SoccerFieldView: UIView {
 
         self.backgroundColor = fieldColor
         self.clipsToBounds = true
-        
-        setupConstants()
-    }
-    
-    func setupConstants() {
-        soccerFieldViewHeight = soccerFieldViewWidth * (68 / 105)
-        
-        let penaltyDotOffsetRatio: CGFloat = 12 / kRealFieldWidth
-        penaltyDotOffset = soccerFieldViewWidth * penaltyDotOffsetRatio
-        
-        let lineWidthRatio: CGFloat = 0.7 / kRealFieldWidth
-        lineWidth = soccerFieldViewWidth * lineWidthRatio
-        
-        let centerCircleWidthRatio: CGFloat = 20 / kRealFieldWidth
-        centerCircleWidth = soccerFieldViewWidth * centerCircleWidthRatio
-        
-        let centerCircleDotWidthRatio: CGFloat = 1 / kRealFieldWidth
-        centerCircleDotWidth = soccerFieldViewWidth * centerCircleDotWidthRatio
-        
-        let goalWidthRatio: CGFloat = 4 / kRealFieldWidth
-        goalWidth = soccerFieldViewWidth * goalWidthRatio
-        
-        let goalHeightRatio: CGFloat = 8 / kRealFieldHeight
-        goalHeight = soccerFieldViewHeight * goalHeightRatio
-        
-        let goalAreaWidthRatio: CGFloat = 6 / kRealFieldWidth
-        goalAreaWidth = soccerFieldViewWidth * goalAreaWidthRatio
-        
-        let goalAreaHeightRatio: CGFloat = 20 / kRealFieldHeight
-        goalAreaHeight = soccerFieldViewHeight * goalAreaHeightRatio
-        
-        let penaltyAreaWidthRatio: CGFloat = 18 / kRealFieldWidth
-        penaltyAreaWidth = soccerFieldViewWidth * penaltyAreaWidthRatio
-        
-        let penaltyAreaHeightRatio: CGFloat = 44 / kRealFieldHeight
-        penaltyAreaHeight = soccerFieldViewHeight * penaltyAreaHeightRatio
-        
-        let areaCurveWidthRatio: CGFloat = 4 / kRealFieldWidth
-        areaCurveWidth = soccerFieldViewWidth * areaCurveWidthRatio
-        
-        let areaCurveHeightRatio: CGFloat = 18 / kRealFieldHeight
-        areaCurveHeight = soccerFieldViewHeight * areaCurveHeightRatio
-        
-        let cornerWidthRatio: CGFloat = 2.5 / kRealFieldWidth
-        cornerWidth = soccerFieldViewWidth * cornerWidthRatio
     }
     
     func drawField() {
@@ -152,13 +81,13 @@ class SoccerFieldView: UIView {
         soccerFieldView.backgroundColor = fieldColor
         soccerFieldView.translatesAutoresizingMaskIntoConstraints = false
         soccerFieldView.layer.borderColor = lineColor.cgColor
-        soccerFieldView.layer.borderWidth = lineWidth
+        soccerFieldView.layer.borderWidth = soccerField.lineWidth
         self.addSubview(soccerFieldView)
         soccerFieldView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.left.equalToSuperview().offset(soccerFieldOffset)
-            make.right.equalToSuperview().offset(-soccerFieldOffset)
+            make.left.equalToSuperview().offset(soccerField.soccerFieldOffset)
+            make.right.equalToSuperview().offset(-soccerField.soccerFieldOffset)
         }
         // must be set for the goals
         soccerFieldView.clipsToBounds = false
@@ -168,7 +97,7 @@ class SoccerFieldView: UIView {
             line.backgroundColor = .clear
             line.translatesAutoresizingMaskIntoConstraints = false
             line.layer.borderColor = lineColor.cgColor
-            line.layer.borderWidth = lineWidth
+            line.layer.borderWidth = soccerField.lineWidth
             soccerFieldView.addSubview(line)
         }
         for dot in fieldDots {
@@ -179,15 +108,15 @@ class SoccerFieldView: UIView {
         
         // add the goals
         homeGoalView.snp.makeConstraints { (make) in
-            make.right.equalTo(soccerFieldView.snp.left).offset(lineWidth)
-            make.width.equalTo(goalWidth)
-            make.height.equalTo(goalHeight)
+            make.right.equalTo(soccerFieldView.snp.left).offset(soccerField.lineWidth)
+            make.width.equalTo(soccerField.goalWidth)
+            make.height.equalTo(soccerField.goalHeight)
             make.centerY.equalToSuperview()
         }
         awayGoalView.snp.makeConstraints { (make) in
-            make.left.equalTo(soccerFieldView.snp.right).offset(-lineWidth)
-            make.width.equalTo(goalWidth)
-            make.height.equalTo(goalHeight)
+            make.left.equalTo(soccerFieldView.snp.right).offset(-soccerField.lineWidth)
+            make.width.equalTo(soccerField.goalWidth)
+            make.height.equalTo(soccerField.goalHeight)
             make.centerY.equalToSuperview()
         }
         homeGoalView.backgroundColor = fieldColor
@@ -196,7 +125,7 @@ class SoccerFieldView: UIView {
         // add midfield line
         midFieldLineView.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.width.equalTo(lineWidth)
+            make.width.equalTo(soccerField.lineWidth)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -204,61 +133,61 @@ class SoccerFieldView: UIView {
         // add the penalty area
         homePenaltyAreaView.snp.makeConstraints { (make) in
             make.left.equalTo(soccerFieldView.snp.left)
-            make.width.equalTo(penaltyAreaWidth)
-            make.height.equalTo(penaltyAreaHeight)
+            make.width.equalTo(soccerField.penaltyAreaWidth)
+            make.height.equalTo(soccerField.penaltyAreaHeight)
             make.centerY.equalToSuperview()
         }
         awayPenaltyAreaView.snp.makeConstraints { (make) in
             make.right.equalTo(soccerFieldView.snp.right)
-            make.width.equalTo(penaltyAreaWidth)
-            make.height.equalTo(penaltyAreaHeight)
+            make.width.equalTo(soccerField.penaltyAreaWidth)
+            make.height.equalTo(soccerField.penaltyAreaHeight)
             make.centerY.equalToSuperview()
         }
         
         // add the goal area
         homeGoalAreaView.snp.makeConstraints { (make) in
             make.left.equalTo(soccerFieldView.snp.left)
-            make.width.equalTo(goalAreaWidth)
-            make.height.equalTo(goalAreaHeight)
+            make.width.equalTo(soccerField.goalAreaWidth)
+            make.height.equalTo(soccerField.goalAreaHeight)
             make.centerY.equalToSuperview()
         }
         awayGoalAreaView.snp.makeConstraints { (make) in
             make.right.equalTo(soccerFieldView.snp.right)
-            make.width.equalTo(goalAreaWidth)
-            make.height.equalTo(goalAreaHeight)
+            make.width.equalTo(soccerField.goalAreaWidth)
+            make.height.equalTo(soccerField.goalAreaHeight)
             make.centerY.equalToSuperview()
         }
 
         // add the penalty dots
         homePenaltyDotView.snp.makeConstraints { (make) in
-            make.width.equalTo(centerCircleDotWidth)
-            make.height.equalTo(centerCircleDotWidth)
+            make.width.equalTo(soccerField.centerCircleDotWidth)
+            make.height.equalTo(soccerField.centerCircleDotWidth)
             make.centerY.equalToSuperview()
-            make.centerX.equalTo(soccerFieldView.snp.left).offset(penaltyDotOffset)
+            make.centerX.equalTo(soccerFieldView.snp.left).offset(soccerField.penaltyDotOffset)
         }
         awayPenaltyDotView.snp.makeConstraints { (make) in
-            make.width.equalTo(centerCircleDotWidth)
-            make.height.equalTo(centerCircleDotWidth)
+            make.width.equalTo(soccerField.centerCircleDotWidth)
+            make.height.equalTo(soccerField.centerCircleDotWidth)
             make.centerY.equalToSuperview()
-            make.centerX.equalTo(soccerFieldView.snp.right).offset(-penaltyDotOffset)
+            make.centerX.equalTo(soccerFieldView.snp.right).offset(-soccerField.penaltyDotOffset)
         }
-        homePenaltyDotView.layer.cornerRadius = centerCircleDotWidth / 2
-        awayPenaltyDotView.layer.cornerRadius = centerCircleDotWidth / 2
+        homePenaltyDotView.layer.cornerRadius = soccerField.centerCircleDotWidth / 2
+        awayPenaltyDotView.layer.cornerRadius = soccerField.centerCircleDotWidth / 2
 
         
         // add the center circle and dot
         centerCircleView.snp.makeConstraints { (make) in
-            make.width.equalTo(centerCircleWidth)
-            make.height.equalTo(centerCircleWidth)
+            make.width.equalTo(soccerField.centerCircleWidth)
+            make.height.equalTo(soccerField.centerCircleWidth)
             make.center.equalToSuperview()
         }
         centerCircleDotView.snp.makeConstraints { (make) in
-            make.width.equalTo(centerCircleDotWidth)
-            make.height.equalTo(centerCircleDotWidth)
+            make.width.equalTo(soccerField.centerCircleDotWidth)
+            make.height.equalTo(soccerField.centerCircleDotWidth)
             make.center.equalToSuperview()
         }
-        centerCircleView.layer.cornerRadius = centerCircleWidth / 2
-        centerCircleDotView.layer.cornerRadius = centerCircleDotWidth / 2
+        centerCircleView.layer.cornerRadius = soccerField.centerCircleWidth / 2
+        centerCircleDotView.layer.cornerRadius = soccerField.centerCircleDotWidth / 2
         
         // add the corners
         for corner in cornerViews {
@@ -269,26 +198,26 @@ class SoccerFieldView: UIView {
         topLeftCornerView.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.top.equalToSuperview()
-            make.width.equalTo(cornerWidth)
-            make.height.equalTo(cornerWidth)
+            make.width.equalTo(soccerField.cornerWidth)
+            make.height.equalTo(soccerField.cornerWidth)
         }
         bottomLeftCornerView.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.width.equalTo(cornerWidth)
-            make.height.equalTo(cornerWidth)
+            make.width.equalTo(soccerField.cornerWidth)
+            make.height.equalTo(soccerField.cornerWidth)
         }
         topRightCornerView.snp.makeConstraints { (make) in
             make.right.equalToSuperview()
             make.top.equalToSuperview()
-            make.width.equalTo(cornerWidth)
-            make.height.equalTo(cornerWidth)
+            make.width.equalTo(soccerField.cornerWidth)
+            make.height.equalTo(soccerField.cornerWidth)
         }
         bottomRightCornerView.snp.makeConstraints { (make) in
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.width.equalTo(cornerWidth)
-            make.height.equalTo(cornerWidth)
+            make.width.equalTo(soccerField.cornerWidth)
+            make.height.equalTo(soccerField.cornerWidth)
         }
         let topLeftShape = CAShapeLayer()
         let bottomLeftShape = CAShapeLayer()
@@ -300,7 +229,7 @@ class SoccerFieldView: UIView {
             corner.strokeColor = lineColor.cgColor
             corner.fillColor = UIColor.clear.cgColor
             corner.position = CGPoint(x: 0, y: 0)
-            corner.lineWidth = lineWidth
+            corner.lineWidth = soccerField.lineWidth
         }
         topLeftCornerView.layer.addSublayer(topLeftShape)
         bottomLeftCornerView.layer.addSublayer(bottomLeftShape)
@@ -317,15 +246,15 @@ class SoccerFieldView: UIView {
             soccerFieldView.addSubview(curve)
         }
         homeAreaCurveView.snp.makeConstraints { (make) in
-            make.width.equalTo(areaCurveWidth)
-            make.height.equalTo(areaCurveHeight)
-            make.left.equalTo(homePenaltyAreaView.snp.right).offset(-lineWidth / 2)
+            make.width.equalTo(soccerField.areaCurveWidth)
+            make.height.equalTo(soccerField.areaCurveHeight)
+            make.left.equalTo(homePenaltyAreaView.snp.right).offset(-soccerField.lineWidth / 2)
             make.centerY.equalToSuperview()
         }
         awayAreaCurveView.snp.makeConstraints { (make) in
-            make.width.equalTo(areaCurveWidth)
-            make.height.equalTo(areaCurveHeight)
-            make.right.equalTo(awayPenaltyAreaView.snp.left).offset(lineWidth / 2)
+            make.width.equalTo(soccerField.areaCurveWidth)
+            make.height.equalTo(soccerField.areaCurveHeight)
+            make.right.equalTo(awayPenaltyAreaView.snp.left).offset(soccerField.lineWidth / 2)
             make.centerY.equalToSuperview()
         }
         
@@ -338,7 +267,7 @@ class SoccerFieldView: UIView {
             curve.strokeColor = lineColor.cgColor
             curve.fillColor = UIColor.clear.cgColor
             curve.position = CGPoint(x: 0, y: 0)
-            curve.lineWidth = lineWidth
+            curve.lineWidth = soccerField.lineWidth
         }
         homeAreaCurveView.layer.addSublayer(homeCurveShape)
         awayAreaCurveView.layer.addSublayer(awayCurveShape)
@@ -347,6 +276,7 @@ class SoccerFieldView: UIView {
     
     func returnCornerBezierPath() -> UIBezierPath {
         let cornerPath = UIBezierPath()
+        let cornerWidth = soccerField.cornerWidth
         cornerPath.move(to: CGPoint(x: 1, y: 1))
         cornerPath.addLine(to: CGPoint(x: 1, y: cornerWidth - 1))
         cornerPath.addLine(to: CGPoint(x: cornerWidth - 1, y: cornerWidth - 1))
@@ -358,6 +288,8 @@ class SoccerFieldView: UIView {
     
     func returnGoalCurveBezierPath() -> UIBezierPath {
         let bezierPath = UIBezierPath()
+        let areaCurveHeight = soccerField.areaCurveHeight
+        let areaCurveWidth = soccerField.areaCurveWidth
         bezierPath.move(to: CGPoint(x: 0, y: 0))
         bezierPath.addCurve(to: CGPoint(x: 0, y: areaCurveHeight), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 0, y: areaCurveHeight))
         bezierPath.addCurve(to: CGPoint(x: areaCurveWidth, y: areaCurveHeight / 2), controlPoint1: CGPoint(x: 0, y: areaCurveHeight), controlPoint2: CGPoint(x: areaCurveWidth, y: areaCurveHeight * (15/18)))
@@ -373,9 +305,7 @@ class SoccerFieldView: UIView {
             return
         }
         
-        soccerFieldOffset = (width * (5 / kRealFieldWidth))
-        soccerFieldViewWidth = width - soccerFieldOffset
-        setupConstants()
+        soccerField.initWithWidth(width)
         drawField()
     }
     
