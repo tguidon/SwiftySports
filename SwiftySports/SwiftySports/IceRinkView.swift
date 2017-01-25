@@ -204,7 +204,6 @@ class IceRinkView: UIView {
             make.width.equalTo(iceRink.circleWidth)
             make.centerX.equalTo(homeGoalLine.snp.right).offset(iceRink.faceoffHorizontalOffset)
             make.centerY.equalTo(self.snp.bottom).offset(-iceRink.faceoffVerticalOffset)
-            make.centerY.equalTo(self.snp.bottom)
         }
         awayTopCircle.snp.makeConstraints { (make) in
             make.height.equalTo(iceRink.circleWidth)
