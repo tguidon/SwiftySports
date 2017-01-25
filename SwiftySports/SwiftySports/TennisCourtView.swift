@@ -16,10 +16,7 @@ protocol TennisCourtViewDataSource {
 class TennisCourtView: UIView {
     
     var dataSource: TennisCourtViewDataSource?
-    
-    // Don't change these constants, used for ratios
-    private let kRealCourtWidth: CGFloat = 78.0
-    private let kRealCourtHeight: CGFloat = 36.0
+    let tennisCourt = TennisCourt()
     
     // UI
     // tennisCourtView holds the court's UI elements
@@ -49,18 +46,6 @@ class TennisCourtView: UIView {
             drawToScale()
         }
     }
-    
-    // Setup temp
-    private var tennisCourtViewWidth: CGFloat = 0
-    private var tennisCourtViewHeight: CGFloat = 0
-    
-    // Offsets
-    private var sidelineOffset: CGFloat = 0
-    private var serviceLineOffset: CGFloat = 0
-    
-    // UI widths
-    private var lineWidth: CGFloat = 0
-    
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -70,21 +55,6 @@ class TennisCourtView: UIView {
                       rightServiceLine, leftCenterServiceLine, rightCenterServiceLine]
         
         self.backgroundColor = .clear
-        
-        setupConstants()
-    }
-    
-    func setupConstants() {
-        tennisCourtViewHeight = tennisCourtViewWidth * (6 / 13)
-        
-        let lineWidthRatio: CGFloat = 0.65 / kRealCourtWidth
-        lineWidth = tennisCourtViewWidth * lineWidthRatio
-        
-        let sidelineOffsetRatio: CGFloat = 4.5 / kRealCourtHeight
-        sidelineOffset = tennisCourtViewHeight * sidelineOffsetRatio
-        
-        let serviceLineOffsetRatio: CGFloat = 21 / kRealCourtWidth
-        serviceLineOffset = tennisCourtViewWidth * serviceLineOffsetRatio        
     }
     
     func drawCourt() {
@@ -92,7 +62,7 @@ class TennisCourtView: UIView {
         tennisCourtView.backgroundColor = courtColor
         tennisCourtView.translatesAutoresizingMaskIntoConstraints = false
         tennisCourtView.layer.borderColor = lineColor.cgColor
-        tennisCourtView.layer.borderWidth = lineWidth
+        tennisCourtView.layer.borderWidth = tennisCourt.lineWidth
         self.addSubview(tennisCourtView)
         tennisCourtView.snp.makeConstraints { (make) in
             make.top.equalTo(0)
@@ -112,7 +82,7 @@ class TennisCourtView: UIView {
         // Constraints for net
         netLine.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.width.equalTo(lineWidth)
+            make.width.equalTo(tennisCourt.lineWidth)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -121,39 +91,39 @@ class TennisCourtView: UIView {
         topSinglesSideline.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.top.equalToSuperview().offset(sidelineOffset)
-            make.height.equalTo(lineWidth)
+            make.top.equalToSuperview().offset(tennisCourt.sidelineOffset)
+            make.height.equalTo(tennisCourt.lineWidth)
         }
         bottomSinglesSideline.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-sidelineOffset)
-            make.height.equalTo(lineWidth)
+            make.bottom.equalToSuperview().offset(-tennisCourt.sidelineOffset)
+            make.height.equalTo(tennisCourt.lineWidth)
         }
         
         // add the service lines
         leftServiceLine.snp.makeConstraints { (make) in
-            make.width.equalTo(lineWidth)
+            make.width.equalTo(tennisCourt.lineWidth)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.centerX.equalToSuperview().offset(-serviceLineOffset)
+            make.centerX.equalToSuperview().offset(-tennisCourt.serviceLineOffset)
         }
         rightServiceLine.snp.makeConstraints { (make) in
-            make.width.equalTo(lineWidth)
+            make.width.equalTo(tennisCourt.lineWidth)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.centerX.equalToSuperview().offset(serviceLineOffset)
+            make.centerX.equalToSuperview().offset(tennisCourt.serviceLineOffset)
         }
         
         // add the center service lines
         leftCenterServiceLine.snp.makeConstraints { (make) in
-            make.height.equalTo(lineWidth)
+            make.height.equalTo(tennisCourt.lineWidth)
             make.left.equalTo(leftServiceLine.snp.right)
             make.right.equalTo(netLine.snp.left)
             make.centerY.equalToSuperview()
         }
         rightCenterServiceLine.snp.makeConstraints { (make) in
-            make.height.equalTo(lineWidth)
+            make.height.equalTo(tennisCourt.lineWidth)
             make.left.equalTo(netLine.snp.right)
             make.right.equalTo(rightServiceLine.snp.left)
             make.centerY.equalToSuperview()
@@ -167,8 +137,7 @@ class TennisCourtView: UIView {
             return
         }
         
-        tennisCourtViewWidth = width
-        setupConstants()
+        tennisCourt.initWithWidth(width)
         drawCourt()
     }
 
