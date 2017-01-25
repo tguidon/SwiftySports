@@ -20,7 +20,6 @@ class ProBasketballCourtView: UIView {
     
     // I dont know the rules of basketball and what the different areas
     // on the court are called. If you're a basketball fan I apologize 🙃
-    
     // UI
     // proBasketballCourtView holds the court's UI elements
     // dataView holds potential data overlays
@@ -58,13 +57,13 @@ class ProBasketballCourtView: UIView {
     private let halfCourtSmallCircleView = UIView()
     private let halfCourtLargeCircleView = UIView()
     
+    private var zoneViews: [UIView] = []
     private var hashMarkLines: [UIView] = []
     private var halfCourtLines: [UIView] = []
     private var homeCourtLines: [UIView] = []
     private var homeCourtHashMarks: [UIView] = []
     private var awayCourtLines: [UIView] = []
     private var awayCourtHashMarks: [UIView] = []
-    
     
     // colors
     var courtColor: UIColor = UIColor(red:0.81, green:0.62, blue:0.54, alpha:1.00) {
@@ -91,6 +90,7 @@ class ProBasketballCourtView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
+        zoneViews = [homeZoneView, awayZoneView]
         hashMarkLines = [topLeftHashMarkView, bottomLeftHashMarkView, topRightHashMarkView, bottomRightHashMarkView]
         halfCourtLines = [halfCourtLineView, halfCourtSmallCircleView, halfCourtLargeCircleView]
         homeCourtLines = [homeSmallBoxView, homeLargeBoxView, homeBackboardView, homeHoopView, homeCircleView]
@@ -176,12 +176,20 @@ class ProBasketballCourtView: UIView {
         
         
         // add the home and away court
-        homeZoneView.backgroundColor = .clear
-        homeZoneView.translatesAutoresizingMaskIntoConstraints = false
-        proBasketballCourtView.addSubview(homeZoneView)
+        for zone in zoneViews {
+            zone.backgroundColor = .clear
+            zone.translatesAutoresizingMaskIntoConstraints = false
+            proBasketballCourtView.addSubview(zone)
+        }
         homeZoneView.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview()
+            make.width.equalTo(proBasketballCourt.zoneViewWidth)
+            make.height.equalTo(proBasketballCourt.zoneViewHeight)
+        }
+        awayZoneView.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.right.equalToSuperview()
             make.width.equalTo(proBasketballCourt.zoneViewWidth)
             make.height.equalTo(proBasketballCourt.zoneViewHeight)
         }
@@ -191,23 +199,13 @@ class ProBasketballCourtView: UIView {
         homeShape.fillColor = UIColor.clear.cgColor
         homeShape.position = CGPoint(x: 0, y: 0)
         homeShape.lineWidth = proBasketballCourt.lineWidth
-        homeZoneView.layer.addSublayer(homeShape)
-        
-        awayZoneView.backgroundColor = .clear
-        awayZoneView.translatesAutoresizingMaskIntoConstraints = false
-        proBasketballCourtView.addSubview(awayZoneView)
-        awayZoneView.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview()
-            make.right.equalToSuperview()
-            make.width.equalTo(proBasketballCourt.zoneViewWidth)
-            make.height.equalTo(proBasketballCourt.zoneViewHeight)
-        }
         let awayShape = CAShapeLayer()
         awayShape.path = returnAwayAreaBezierPath().cgPath
         awayShape.strokeColor = lineColor.cgColor
         awayShape.fillColor = UIColor.clear.cgColor
         awayShape.position = CGPoint(x: 0.5, y: 0.5)
         awayShape.lineWidth = proBasketballCourt.lineWidth
+        homeZoneView.layer.addSublayer(homeShape)
         awayZoneView.layer.addSublayer(awayShape)
         
         // add all lines
