@@ -52,12 +52,13 @@ class SoccerFieldView: UIView {
     // Colors with a redraw on set tp update view
     var fieldColor: UIColor = UIColor(red:0.55, green:0.84, blue:0.57, alpha:1.00) {
         didSet {
-            drawToScale()
+            self.backgroundColor = fieldColor
+            drawField()
         }
     }
     var lineColor: UIColor = .white {
         didSet {
-            drawToScale()
+            drawField()
         }
     }
     
@@ -108,13 +109,13 @@ class SoccerFieldView: UIView {
         
         // add the goals
         homeGoalView.snp.makeConstraints { (make) in
-            make.right.equalTo(soccerFieldView.snp.left).offset(soccerField.lineWidth)
+            make.right.equalTo(soccerFieldView.snp.left)
             make.width.equalTo(soccerField.goalWidth)
             make.height.equalTo(soccerField.goalHeight)
             make.centerY.equalToSuperview()
         }
         awayGoalView.snp.makeConstraints { (make) in
-            make.left.equalTo(soccerFieldView.snp.right).offset(-soccerField.lineWidth)
+            make.left.equalTo(soccerFieldView.snp.right)
             make.width.equalTo(soccerField.goalWidth)
             make.height.equalTo(soccerField.goalHeight)
             make.centerY.equalToSuperview()

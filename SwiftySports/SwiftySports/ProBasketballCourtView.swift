@@ -68,22 +68,22 @@ class ProBasketballCourtView: UIView {
     // colors
     var courtColor: UIColor = UIColor(red:0.81, green:0.62, blue:0.54, alpha:1.00) {
         didSet {
-            drawToScale()
+            drawCourt()
         }
     }
     var lineColor: UIColor = .white {
         didSet {
-            drawToScale()
+            drawCourt()
         }
     }
     var centerCircleColor: UIColor = .purple {
         didSet {
-            drawToScale()
+            drawCourt()
         }
     }
     var boxColor: UIColor = .blue {
         didSet {
-            drawToScale()
+            drawCourt()
         }
     }
     
