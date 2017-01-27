@@ -25,6 +25,8 @@ SwiftySport view's themes can be changed as vars of the view. See tables below f
 
 **Ratios**
 
+I need to rework this to be more sectional. Each rink/court/field should have its own section to discuss theming, modifications, and unique featuers.
+
 | Type             | Ratio     |
 | ---------------- |:---------:|
 | Hockey rink      | 40:17     |
@@ -50,7 +52,7 @@ SwiftySport view's themes can be changed as vars of the view. See tables below f
 
 ##### Main
 - [X] Add tennis court
-- [ ] Add soccer field
+- [X] Add soccer field
 - [ ] Add football field
-- [ ] Add basketball court
+- [X] Add basketball court
 - [ ] Add baseball field...
