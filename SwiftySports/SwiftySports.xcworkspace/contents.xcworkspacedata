@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SwiftySports.xcodeproj">
+      location = "group:/Users/tguidon/Developer/SwiftySports/SwiftySports/ArenaKit.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

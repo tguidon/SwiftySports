@@ -64,6 +64,7 @@ class TennisCourtView: UIView {
         tennisCourtView.layer.borderColor = lineColor.cgColor
         tennisCourtView.layer.borderWidth = tennisCourt.lineWidth
         self.addSubview(tennisCourtView)
+        print(self.frame.width)
         tennisCourtView.snp.makeConstraints { (make) in
             make.top.equalTo(0)
             make.left.equalTo(0)

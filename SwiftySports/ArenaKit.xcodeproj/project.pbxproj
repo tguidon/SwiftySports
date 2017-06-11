@@ -29,7 +29,7 @@
 		5FE63555294836F49BEC7ED7 /* Pods_SwiftySports.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftySports.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		960FEF707BBBF36CD6150442 /* Pods-SwiftySports.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftySports.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftySports/Pods-SwiftySports.release.xcconfig"; sourceTree = "<group>"; };
 		A2ACC97C00BD410E90D8FA09 /* Pods-SwiftySports.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftySports.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftySports/Pods-SwiftySports.debug.xcconfig"; sourceTree = "<group>"; };
-		E81C33B31E2EE4AF0052DC0C /* SwiftySports.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftySports.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E81C33B31E2EE4AF0052DC0C /* ArenaKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArenaKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E81C33B61E2EE4AF0052DC0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E81C33B81E2EE4AF0052DC0C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E81C33BB1E2EE4AF0052DC0C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -80,7 +80,7 @@
 		E81C33AA1E2EE4AF0052DC0C = {
 			isa = PBXGroup;
 			children = (
-				E81C33B51E2EE4AF0052DC0C /* SwiftySports */,
+				E81C33B51E2EE4AF0052DC0C /* ArenaKit */,
 				E81C33B41E2EE4AF0052DC0C /* Products */,
 				C025192F1D1F3847581BB2F9 /* Pods */,
 				4D2A2F0639C2170947658919 /* Frameworks */,
@@ -90,12 +90,12 @@
 		E81C33B41E2EE4AF0052DC0C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E81C33B31E2EE4AF0052DC0C /* SwiftySports.app */,
+				E81C33B31E2EE4AF0052DC0C /* ArenaKit.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E81C33B51E2EE4AF0052DC0C /* SwiftySports */ = {
+		E81C33B51E2EE4AF0052DC0C /* ArenaKit */ = {
 			isa = PBXGroup;
 			children = (
 				E81C33B61E2EE4AF0052DC0C /* AppDelegate.swift */,
@@ -110,6 +110,7 @@
 				E81C33BF1E2EE4AF0052DC0C /* LaunchScreen.storyboard */,
 				E81C33C21E2EE4AF0052DC0C /* Info.plist */,
 			);
+			name = ArenaKit;
 			path = SwiftySports;
 			sourceTree = "<group>";
 		};
@@ -161,9 +162,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E81C33B21E2EE4AF0052DC0C /* SwiftySports */ = {
+		E81C33B21E2EE4AF0052DC0C /* ArenaKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E81C33C51E2EE4AF0052DC0C /* Build configuration list for PBXNativeTarget "SwiftySports" */;
+			buildConfigurationList = E81C33C51E2EE4AF0052DC0C /* Build configuration list for PBXNativeTarget "ArenaKit" */;
 			buildPhases = (
 				1781A1C56329EDDE446FEBD9 /* [CP] Check Pods Manifest.lock */,
 				E81C33AF1E2EE4AF0052DC0C /* Sources */,
@@ -176,9 +177,9 @@
 			);
 			dependencies = (
 			);
-			name = SwiftySports;
+			name = ArenaKit;
 			productName = SwiftySports;
-			productReference = E81C33B31E2EE4AF0052DC0C /* SwiftySports.app */;
+			productReference = E81C33B31E2EE4AF0052DC0C /* ArenaKit.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -198,7 +199,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E81C33AE1E2EE4AF0052DC0C /* Build configuration list for PBXProject "SwiftySports" */;
+			buildConfigurationList = E81C33AE1E2EE4AF0052DC0C /* Build configuration list for PBXProject "ArenaKit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -211,7 +212,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E81C33B21E2EE4AF0052DC0C /* SwiftySports */,
+				E81C33B21E2EE4AF0052DC0C /* ArenaKit */,
 			);
 		};
 /* End PBXProject section */
@@ -418,9 +419,10 @@
 				DEVELOPMENT_TEAM = 4ZMW5MD4WT;
 				INFOPLIST_FILE = SwiftySports/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.taylorguidon.SwiftySports;
+				PRODUCT_BUNDLE_IDENTIFIER = com.taylorguidon.ArenaKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -432,16 +434,17 @@
 				DEVELOPMENT_TEAM = 4ZMW5MD4WT;
 				INFOPLIST_FILE = SwiftySports/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.taylorguidon.SwiftySports;
+				PRODUCT_BUNDLE_IDENTIFIER = com.taylorguidon.ArenaKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E81C33AE1E2EE4AF0052DC0C /* Build configuration list for PBXProject "SwiftySports" */ = {
+		E81C33AE1E2EE4AF0052DC0C /* Build configuration list for PBXProject "ArenaKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E81C33C31E2EE4AF0052DC0C /* Debug */,
@@ -450,7 +453,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E81C33C51E2EE4AF0052DC0C /* Build configuration list for PBXNativeTarget "SwiftySports" */ = {
+		E81C33C51E2EE4AF0052DC0C /* Build configuration list for PBXNativeTarget "ArenaKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E81C33C61E2EE4AF0052DC0C /* Debug */,
