@@ -48,12 +48,12 @@ class SoccerFieldView: UIView {
     var fieldColor: UIColor = UIColor(red:0.55, green:0.84, blue:0.57, alpha:1.00) {
         didSet {
             self.backgroundColor = fieldColor
-            drawField()
+            draw()
         }
     }
     var lineColor: UIColor = .white {
         didSet {
-            drawField()
+            draw()
         }
     }
     
@@ -71,19 +71,36 @@ class SoccerFieldView: UIView {
         self.clipsToBounds = true
     }
     
-    func drawToScale() {
-        soccerField.initWithWidth(self.frame.width)
-        drawField()
-    }
-    
-    func drawField() {
-        self.backgroundColor = fieldColor
+    func setup() {
         // add the main soccer view and add an offset for the nets
         soccerFieldView.backgroundColor = fieldColor
         soccerFieldView.translatesAutoresizingMaskIntoConstraints = false
         soccerFieldView.layer.borderColor = lineColor.cgColor
-        soccerFieldView.layer.borderWidth = soccerField.lineWidth
         self.addSubview(soccerFieldView)
+        
+        // set up the lines and dots and add to view
+        for line in fieldLines {
+            line.backgroundColor = .clear
+            line.translatesAutoresizingMaskIntoConstraints = false
+            line.layer.borderColor = lineColor.cgColor
+            soccerFieldView.addSubview(line)
+        }
+        for dot in fieldDots {
+            dot.backgroundColor = lineColor
+            dot.translatesAutoresizingMaskIntoConstraints = false
+            soccerFieldView.addSubview(dot)
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        soccerField.initWithWidth(self.frame.width)
+        draw()
+    }
+    
+    func draw() {
+        // Draw field
         soccerFieldView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
@@ -91,20 +108,12 @@ class SoccerFieldView: UIView {
             make.right.equalToSuperview().offset(-soccerField.soccerFieldOffset)
         }
         // must be set for the goals
+        soccerFieldView.layer.borderWidth = soccerField.lineWidth
         soccerFieldView.clipsToBounds = false
         
         // set up the lines and dots and add to view
         for line in fieldLines {
-            line.backgroundColor = .clear
-            line.translatesAutoresizingMaskIntoConstraints = false
-            line.layer.borderColor = lineColor.cgColor
             line.layer.borderWidth = soccerField.lineWidth
-            soccerFieldView.addSubview(line)
-        }
-        for dot in fieldDots {
-            dot.backgroundColor = lineColor
-            dot.translatesAutoresizingMaskIntoConstraints = false
-            soccerFieldView.addSubview(dot)
         }
         
         // add the goals
@@ -215,7 +224,7 @@ class SoccerFieldView: UIView {
             make.height.equalTo(soccerField.cornerWidth)
         }
         bottomRightCornerView.snp.makeConstraints { (make) in
-            make.right.equalToSuperview()
+            make.right.equalToSuperview().offset(-2)
             make.bottom.equalToSuperview()
             make.width.equalTo(soccerField.cornerWidth)
             make.height.equalTo(soccerField.cornerWidth)
@@ -232,13 +241,16 @@ class SoccerFieldView: UIView {
             corner.position = CGPoint(x: 0, y: 0)
             corner.lineWidth = soccerField.lineWidth
         }
+        topLeftCornerView.layer.sublayers?.forEach({ (layer) in
+            layer.removeFromSuperlayer()
+        })
         topLeftCornerView.layer.addSublayer(topLeftShape)
         bottomLeftCornerView.layer.addSublayer(bottomLeftShape)
         topRightCornerView.layer.addSublayer(topRightShape)
         bottomRightCornerView.layer.addSublayer(bottomRightShape)
-        topLeftCornerView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
-        topRightCornerView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
-        bottomRightCornerView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2 * 3))
+        topLeftCornerView.transform = CGAffineTransform(rotationAngle: .pi / 2)
+        topRightCornerView.transform = CGAffineTransform(rotationAngle: .pi)
+        bottomRightCornerView.transform = CGAffineTransform(rotationAngle: (.pi / 2) * 3)
         
         // add the curve right outside the penalty and goal
         for curve in curveViews {
@@ -259,7 +271,6 @@ class SoccerFieldView: UIView {
             make.centerY.equalToSuperview()
         }
         
-        
         let homeCurveShape = CAShapeLayer()
         let awayCurveShape = CAShapeLayer()
         let curveShapes = [homeCurveShape, awayCurveShape]
@@ -270,9 +281,15 @@ class SoccerFieldView: UIView {
             curve.position = CGPoint(x: 0, y: 0)
             curve.lineWidth = soccerField.lineWidth
         }
+        homeAreaCurveView.layer.sublayers?.forEach({ (layer) in
+            layer.removeFromSuperlayer()
+        })
         homeAreaCurveView.layer.addSublayer(homeCurveShape)
+        awayAreaCurveView.layer.sublayers?.forEach({ (layer) in
+            layer.removeFromSuperlayer()
+        })
         awayAreaCurveView.layer.addSublayer(awayCurveShape)
-        awayAreaCurveView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+        awayAreaCurveView.transform = CGAffineTransform(rotationAngle: .pi)
     }
     
     func returnCornerBezierPath() -> UIBezierPath {

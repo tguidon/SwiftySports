@@ -22,13 +22,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         tennisCourtView.setup()
         iceRinkView.setup()
+        soccerFieldView.setup()
      }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        iceRinkView.drawToScale()
 //        proBasketballCourtView.drawToScale()
-//        soccerFieldView.drawToScale()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
