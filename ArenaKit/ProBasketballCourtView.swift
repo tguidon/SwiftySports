@@ -68,22 +68,22 @@ class ProBasketballCourtView: UIView {
     // colors
     var courtColor: UIColor = UIColor(red:0.81, green:0.62, blue:0.54, alpha:1.00) {
         didSet {
-            drawCourt()
+            draw()
         }
     }
     var lineColor: UIColor = .white {
         didSet {
-            drawCourt()
+            draw()
         }
     }
     var centerCircleColor: UIColor = .purple {
         didSet {
-            drawCourt()
+            draw()
         }
     }
     var boxColor: UIColor = .blue {
         didSet {
-            drawCourt()
+            draw()
         }
     }
     
@@ -102,18 +102,39 @@ class ProBasketballCourtView: UIView {
         self.clipsToBounds = true
     }
     
-    func drawToScale() {
-        proBasketballCourt.initWithWidth(self.frame.width)
-        drawCourt()
+    func setup() {
+        proBasketballCourtView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(proBasketballCourtView)
+        hashMarkLines.forEach({ proBasketballCourtView.addSubview($0) })
+        halfCourtLines.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        halfCourtLines.forEach({ proBasketballCourtView.addSubview($0) })
+        zoneViews.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        zoneViews.forEach({ proBasketballCourtView.addSubview($0) })
+        homeCourtLines.forEach({ homeZoneView.addSubview($0) })
+        awayCourtLines.forEach({ awayZoneView.addSubview($0) })
+        let courtLines = [homeCourtLines, awayCourtLines]
+        for court in courtLines {
+            court.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        }
+        homeCourtHashMarks.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        homeCourtHashMarks.forEach({ homeZoneView.addSubview($0) })
+        awayCourtHashMarks.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        awayCourtHashMarks.forEach({ awayZoneView.addSubview($0) })
     }
     
-    func drawCourt() {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        proBasketballCourt.initWithWidth(self.frame.width)
+        draw()
+    }
+    
+    func draw() {
+        // Draw basketball court
         proBasketballCourtView.backgroundColor = courtColor
-        proBasketballCourtView.translatesAutoresizingMaskIntoConstraints = false
         proBasketballCourtView.layer.borderColor = lineColor.cgColor
         proBasketballCourtView.layer.borderWidth = proBasketballCourt.lineWidth
-        self.addSubview(proBasketballCourtView)
-        proBasketballCourtView.snp.makeConstraints { (make) in
+        proBasketballCourtView.snp.remakeConstraints { (make) in
             make.top.equalTo(0)
             make.left.equalTo(0)
             make.right.equalTo(0)
@@ -121,57 +142,50 @@ class ProBasketballCourtView: UIView {
             make.width.equalToSuperview()
         }
         
-        // add the hashmarks
-        for hashMark in hashMarkLines {
-            hashMark.backgroundColor = lineColor
-            hashMark.translatesAutoresizingMaskIntoConstraints = false
-            proBasketballCourtView.addSubview(hashMark)
-        }
-        topLeftHashMarkView.snp.makeConstraints { (make) in
+        // Draw the hashmarks
+        hashMarkLines.forEach({ $0.backgroundColor = lineColor })
+        hashMarkLines.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        topLeftHashMarkView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.lineWidth)
             make.height.equalTo(proBasketballCourt.hashMarkHeight)
             make.top.equalToSuperview()
             make.left.equalToSuperview().offset(proBasketballCourt.hashMarkOffset)
         }
-        bottomLeftHashMarkView.snp.makeConstraints { (make) in
+        bottomLeftHashMarkView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.lineWidth)
             make.height.equalTo(proBasketballCourt.hashMarkHeight)
             make.bottom.equalToSuperview()
             make.left.equalToSuperview().offset(proBasketballCourt.hashMarkOffset)
         }
-        topRightHashMarkView.snp.makeConstraints { (make) in
+        topRightHashMarkView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.lineWidth)
             make.height.equalTo(proBasketballCourt.hashMarkHeight)
             make.top.equalToSuperview()
             make.right.equalToSuperview().offset(-proBasketballCourt.hashMarkOffset)
         }
-        bottomRightHashMarkView.snp.makeConstraints { (make) in
+        bottomRightHashMarkView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.lineWidth)
             make.height.equalTo(proBasketballCourt.hashMarkHeight)
             make.bottom.equalToSuperview()
             make.right.equalToSuperview().offset(-proBasketballCourt.hashMarkOffset)
         }
         
-        // add the half court line and circles
-        for line in halfCourtLines {
-            line.backgroundColor = .clear
-            line.translatesAutoresizingMaskIntoConstraints = false
-            line.layer.borderColor = lineColor.cgColor
-            line.layer.borderWidth = proBasketballCourt.lineWidth
-            proBasketballCourtView.addSubview(line)
-        }
-        halfCourtLineView.snp.makeConstraints { (make) in
+        // Draw the half court line and circles
+        halfCourtLines.forEach({ $0.backgroundColor = .clear })
+        halfCourtLines.forEach({ $0.layer.borderColor = lineColor.cgColor })
+        halfCourtLines.forEach({ $0.layer.borderWidth = proBasketballCourt.lineWidth })
+        halfCourtLineView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.lineWidth)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.centerX.equalToSuperview()
         }
-        halfCourtSmallCircleView.snp.makeConstraints { (make) in
+        halfCourtSmallCircleView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.smallCircleWidth)
             make.height.equalTo(proBasketballCourt.smallCircleWidth)
             make.center.equalToSuperview()
         }
-        halfCourtLargeCircleView.snp.makeConstraints { (make) in
+        halfCourtLargeCircleView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.largeCircleWidth)
             make.height.equalTo(proBasketballCourt.largeCircleWidth)
             make.center.equalToSuperview()
@@ -179,20 +193,15 @@ class ProBasketballCourtView: UIView {
         halfCourtSmallCircleView.layer.cornerRadius = proBasketballCourt.smallCircleWidth / 2
         halfCourtLargeCircleView.layer.cornerRadius = proBasketballCourt.largeCircleWidth / 2
         
-        
-        // add the home and away court
-        for zone in zoneViews {
-            zone.backgroundColor = .clear
-            zone.translatesAutoresizingMaskIntoConstraints = false
-            proBasketballCourtView.addSubview(zone)
-        }
-        homeZoneView.snp.makeConstraints { (make) in
+        // Draw the home and away court
+        zoneViews.forEach({ $0.backgroundColor = .clear })
+        homeZoneView.snp.remakeConstraints { (make) in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview()
             make.width.equalTo(proBasketballCourt.zoneViewWidth)
             make.height.equalTo(proBasketballCourt.zoneViewHeight)
         }
-        awayZoneView.snp.makeConstraints { (make) in
+        awayZoneView.snp.remakeConstraints { (make) in
             make.centerY.equalToSuperview()
             make.right.equalToSuperview()
             make.width.equalTo(proBasketballCourt.zoneViewWidth)
@@ -213,85 +222,70 @@ class ProBasketballCourtView: UIView {
         homeZoneView.layer.addSublayer(homeShape)
         awayZoneView.layer.addSublayer(awayShape)
         
-        // add all lines
-        for line in homeCourtLines {
-            line.backgroundColor = .clear
-            line.translatesAutoresizingMaskIntoConstraints = false
-            line.layer.borderColor = lineColor.cgColor
-            line.layer.borderWidth = proBasketballCourt.lineWidth
-            homeZoneView.addSubview(line)
-        }
-        for line in awayCourtLines {
-            line.backgroundColor = .clear
-            line.translatesAutoresizingMaskIntoConstraints = false
-            line.layer.borderColor = lineColor.cgColor
-            line.layer.borderWidth = proBasketballCourt.lineWidth
-            awayZoneView.addSubview(line)
+        // Draw all lines
+        let courtLines = [homeCourtLines, awayCourtLines]
+        for court in courtLines {
+            court.forEach({ $0.backgroundColor = .clear })
+            court.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+            court.forEach({ $0.layer.borderColor = lineColor.cgColor })
+            court.forEach({ $0.layer.borderWidth = proBasketballCourt.lineWidth })
         }
         
-        // boxes
-        homeLargeBoxView.snp.makeConstraints { (make) in
+        // Draw boxes
+        homeLargeBoxView.snp.remakeConstraints { (make) in
             make.left.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.equalTo(proBasketballCourt.boxWidth)
             make.height.equalTo(proBasketballCourt.largeBoxHeight)
         }
-        homeSmallBoxView.snp.makeConstraints { (make) in
+        homeSmallBoxView.snp.remakeConstraints { (make) in
             make.left.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.equalTo(proBasketballCourt.boxWidth)
             make.height.equalTo(proBasketballCourt.smallBoxHeight)
         }
-        awayLargeBoxView.snp.makeConstraints { (make) in
+        awayLargeBoxView.snp.remakeConstraints { (make) in
             make.right.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.equalTo(proBasketballCourt.boxWidth)
             make.height.equalTo(proBasketballCourt.largeBoxHeight)
         }
-        awaySmallBoxView.snp.makeConstraints { (make) in
+        awaySmallBoxView.snp.remakeConstraints { (make) in
             make.right.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.equalTo(proBasketballCourt.boxWidth)
             make.height.equalTo(proBasketballCourt.smallBoxHeight)
         }
         
-        // hashmarks
-        for hash in homeCourtHashMarks {
-            hash.backgroundColor = .clear
-            hash.translatesAutoresizingMaskIntoConstraints = false
-            homeZoneView.addSubview(hash)
-        }
-        for hash in awayCourtHashMarks {
-            hash.backgroundColor = .clear
-            hash.translatesAutoresizingMaskIntoConstraints = false
-            awayZoneView.addSubview(hash)
-        }
-        homeTopBoxHashmarkView.snp.makeConstraints { (make) in
+        // Draw hashmarks
+        homeCourtHashMarks.forEach({ $0.backgroundColor = .clear })
+        awayCourtHashMarks.forEach({ $0.backgroundColor = .clear })
+        homeTopBoxHashmarkView.snp.remakeConstraints { (make) in
             make.left.equalTo(homeLargeBoxView.snp.left)
             make.bottom.equalTo(homeLargeBoxView.snp.top)
             make.width.equalTo(homeLargeBoxView.snp.width)
             make.height.equalTo(proBasketballCourt.hashMarkHeight / 2)
         }
-        homeBottomBoxHashmarkView.snp.makeConstraints { (make) in
+        homeBottomBoxHashmarkView.snp.remakeConstraints { (make) in
             make.left.equalTo(homeLargeBoxView.snp.left)
             make.top.equalTo(homeLargeBoxView.snp.bottom)
             make.width.equalTo(homeLargeBoxView.snp.width)
             make.height.equalTo(proBasketballCourt.hashMarkHeight / 2)
         }
-        awayTopBoxHashmarkView.snp.makeConstraints { (make) in
+        awayTopBoxHashmarkView.snp.remakeConstraints { (make) in
             make.left.equalTo(awayLargeBoxView.snp.left)
             make.bottom.equalTo(awayLargeBoxView.snp.top)
             make.width.equalTo(awayLargeBoxView.snp.width)
             make.height.equalTo(proBasketballCourt.hashMarkHeight / 2)
         }
-        awayBottomBoxHashmarkView.snp.makeConstraints { (make) in
+        awayBottomBoxHashmarkView.snp.remakeConstraints { (make) in
             make.left.equalTo(awayLargeBoxView.snp.left)
             make.top.equalTo(awayLargeBoxView.snp.bottom)
             make.width.equalTo(awayLargeBoxView.snp.width)
             make.height.equalTo(proBasketballCourt.hashMarkHeight / 2)
         }
         
-        // add the hashmarks to the views
+        // Draw the hashmarks in the views
         for i in 0...1 {
             var v: UIView?
             if i == 0 {
@@ -311,7 +305,7 @@ class ProBasketballCourtView: UIView {
                 }
                 hashMarkView.addSubview(h)
                 
-                h.snp.makeConstraints({ (make) in
+                h.snp.remakeConstraints({ (make) in
                     make.width.equalTo(proBasketballCourt.lineWidth)
                     make.bottom.equalToSuperview()
                     make.top.equalToSuperview()
@@ -350,7 +344,7 @@ class ProBasketballCourtView: UIView {
                 }
                 hashMarkView.addSubview(h)
                 
-                h.snp.makeConstraints({ (make) in
+                h.snp.remakeConstraints({ (make) in
                     make.width.equalTo(proBasketballCourt.lineWidth)
                     make.bottom.equalToSuperview()
                     make.top.equalToSuperview()
@@ -370,26 +364,26 @@ class ProBasketballCourtView: UIView {
             
         }
         
-        // add the backboard and hoop
-        homeBackboardView.snp.makeConstraints { (make) in
+        // Draw the backboard and hoop
+        homeBackboardView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.lineWidth)
             make.height.equalTo(proBasketballCourt.backboardHeight)
             make.left.equalTo(self.snp.left).offset(proBasketballCourt.backboardOffset)
             make.centerY.equalToSuperview()
         }
-        awayBackboardView.snp.makeConstraints { (make) in
+        awayBackboardView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.lineWidth)
             make.height.equalTo(proBasketballCourt.backboardHeight)
             make.right.equalTo(self.snp.right).offset(-proBasketballCourt.backboardOffset)
             make.centerY.equalToSuperview()
         }
-        homeHoopView.snp.makeConstraints { (make) in
+        homeHoopView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.hoopWidth)
             make.height.equalTo(proBasketballCourt.hoopWidth)
             make.left.equalTo(homeBackboardView.snp.right)
             make.centerY.equalToSuperview()
         }
-        awayHoopView.snp.makeConstraints { (make) in
+        awayHoopView.snp.remakeConstraints { (make) in
             make.width.equalTo(proBasketballCourt.hoopWidth)
             make.height.equalTo(proBasketballCourt.hoopWidth)
             make.right.equalTo(awayBackboardView.snp.left)
@@ -405,14 +399,14 @@ class ProBasketballCourtView: UIView {
         awayHoopView.layer.borderWidth = lineWidth
         awayHoopView.layer.cornerRadius = hoopWidth / 2
         
-        // add the foul line circle
-        homeCircleView.snp.makeConstraints { (make) in
+        // Draw the foul line circle
+        homeCircleView.snp.remakeConstraints { (make) in
             make.centerX.equalTo(homeLargeBoxView.snp.right).offset(-proBasketballCourt.lineWidth / 2)
             make.centerY.equalToSuperview()
             make.width.equalTo(proBasketballCourt.largeCircleWidth)
             make.height.equalTo(proBasketballCourt.largeCircleWidth)
         }
-        awayCircleView.snp.makeConstraints { (make) in
+        awayCircleView.snp.remakeConstraints { (make) in
             make.centerX.equalTo(awayLargeBoxView.snp.left).offset(proBasketballCourt.lineWidth / 2)
             make.centerY.equalToSuperview()
             make.width.equalTo(proBasketballCourt.largeCircleWidth)
