@@ -12,13 +12,10 @@ import SnapKit
 class TennisCourtView: UIView {
     
     let tennisCourt = TennisCourt()
-    
-    // UI
     // tennisCourtView holds the court's UI elements
     // dataView holds potential data overlays
     private let tennisCourtView = UIView()
     private let dataView = UIView()
-    
     private let netLine = UIView()
     private let topSinglesSideline = UIView()
     private let bottomSinglesSideline = UIView()
@@ -33,18 +30,17 @@ class TennisCourtView: UIView {
     // Colors with a redraw on set tp update view
     var courtColor: UIColor = UIColor(red:0.55, green:0.84, blue:0.57, alpha:1.00) {
         didSet {
-            tennisCourtView.backgroundColor = courtColor
+            draw()
         }
     }
     var lineColor: UIColor = .white {
         didSet {
-            courtLines.forEach({ $0.backgroundColor = lineColor })
+            draw()
         }
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
         // build array of lines
         courtLines = [netLine, topSinglesSideline, bottomSinglesSideline, leftServiceLine,
                       rightServiceLine, leftCenterServiceLine, rightCenterServiceLine]
@@ -54,12 +50,9 @@ class TennisCourtView: UIView {
     
     func setup() {
         // Add the base green court
-        tennisCourtView.backgroundColor = courtColor
         tennisCourtView.translatesAutoresizingMaskIntoConstraints = false
-        tennisCourtView.layer.borderColor = lineColor.cgColor
         self.addSubview(tennisCourtView)
-        // Set up all the lines and add to view
-        courtLines.forEach({ $0.backgroundColor = lineColor })
+        // Add and setup lines
         courtLines.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
         courtLines.forEach({ tennisCourtView.addSubview($0) })
     }
@@ -72,9 +65,10 @@ class TennisCourtView: UIView {
     }
     
     private func draw() {
+        // Draw the main court view
+        tennisCourtView.backgroundColor = courtColor
+        tennisCourtView.layer.borderColor = lineColor.cgColor
         tennisCourtView.layer.borderWidth = tennisCourt.lineWidth
-        
-        // Set up main court view
         tennisCourtView.snp.remakeConstraints { (make) in
             make.top.equalTo(0)
             make.left.equalTo(0)
@@ -82,7 +76,8 @@ class TennisCourtView: UIView {
             make.bottom.equalTo(0)
         }
         
-        // Constraints for net
+        courtLines.forEach({ $0.backgroundColor = lineColor })
+        // Draw the net
         netLine.snp.remakeConstraints { (make) in
             make.centerX.equalToSuperview()
             make.width.equalTo(tennisCourt.lineWidth)
@@ -90,7 +85,7 @@ class TennisCourtView: UIView {
             make.bottom.equalToSuperview()
         }
         
-        // Sidelines
+        // Draw sidelines
         topSinglesSideline.snp.remakeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
@@ -104,7 +99,7 @@ class TennisCourtView: UIView {
             make.height.equalTo(tennisCourt.lineWidth)
         }
         
-        // Add the service lines
+        // Draw the service lines
         leftServiceLine.snp.remakeConstraints { (make) in
             make.width.equalTo(tennisCourt.lineWidth)
             make.top.equalToSuperview()
@@ -118,7 +113,7 @@ class TennisCourtView: UIView {
             make.centerX.equalToSuperview().offset(tennisCourt.serviceLineOffset)
         }
         
-        // Add the center service lines
+        // Draw the center service lines
         leftCenterServiceLine.snp.remakeConstraints { (make) in
             make.height.equalTo(tennisCourt.lineWidth)
             make.left.equalTo(leftServiceLine.snp.right)
