@@ -28,7 +28,7 @@ class TennisCourt {
     func updateConstants() {
         self.height = width * (6 / 13)
         
-        let lineWidthRatio: CGFloat = 0.65 / kRealCourtWidth
+        let lineWidthRatio: CGFloat = 0.55 / kRealCourtWidth
         self.lineWidth = width * lineWidthRatio
         
         let sidelineOffsetRatio: CGFloat = 4.5 / kRealCourtHeight

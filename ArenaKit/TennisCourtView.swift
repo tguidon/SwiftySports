@@ -33,12 +33,12 @@ class TennisCourtView: UIView {
     // Colors with a redraw on set tp update view
     var courtColor: UIColor = UIColor(red:0.55, green:0.84, blue:0.57, alpha:1.00) {
         didSet {
-            drawToScale()
+            tennisCourtView.backgroundColor = courtColor
         }
     }
     var lineColor: UIColor = .white {
         didSet {
-            drawToScale()
+            courtLines.forEach({ $0.backgroundColor = lineColor })
         }
     }
 
@@ -52,83 +52,84 @@ class TennisCourtView: UIView {
         self.backgroundColor = .clear
     }
     
-    func drawToScale() {
-        tennisCourt.initWithWidth(self.frame.width)
-        drawCourt()
-    }
-    
-    func drawCourt() {
+    func setup() {
         // Add the base green court
         tennisCourtView.backgroundColor = courtColor
         tennisCourtView.translatesAutoresizingMaskIntoConstraints = false
         tennisCourtView.layer.borderColor = lineColor.cgColor
-        tennisCourtView.layer.borderWidth = tennisCourt.lineWidth
         self.addSubview(tennisCourtView)
-        tennisCourtView.snp.makeConstraints { (make) in
+        // Set up all the lines and add to view
+        courtLines.forEach({ $0.backgroundColor = lineColor })
+        courtLines.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        courtLines.forEach({ tennisCourtView.addSubview($0) })
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        tennisCourt.initWithWidth(self.frame.width)
+        draw()
+    }
+    
+    private func draw() {
+        tennisCourtView.layer.borderWidth = tennisCourt.lineWidth
+        
+        // Set up main court view
+        tennisCourtView.snp.remakeConstraints { (make) in
             make.top.equalTo(0)
             make.left.equalTo(0)
             make.right.equalTo(0)
             make.bottom.equalTo(0)
-            make.width.equalToSuperview()
-        }
-        
-        // Set up all the lines and add to view
-        for line in courtLines {
-            line.backgroundColor = lineColor
-            line.translatesAutoresizingMaskIntoConstraints = false
-            tennisCourtView.addSubview(line)
         }
         
         // Constraints for net
-        netLine.snp.makeConstraints { (make) in
+        netLine.snp.remakeConstraints { (make) in
             make.centerX.equalToSuperview()
             make.width.equalTo(tennisCourt.lineWidth)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         
-        // sidelines
-        topSinglesSideline.snp.makeConstraints { (make) in
+        // Sidelines
+        topSinglesSideline.snp.remakeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalToSuperview().offset(tennisCourt.sidelineOffset)
             make.height.equalTo(tennisCourt.lineWidth)
         }
-        bottomSinglesSideline.snp.makeConstraints { (make) in
+        bottomSinglesSideline.snp.remakeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-tennisCourt.sidelineOffset)
             make.height.equalTo(tennisCourt.lineWidth)
         }
         
-        // add the service lines
-        leftServiceLine.snp.makeConstraints { (make) in
+        // Add the service lines
+        leftServiceLine.snp.remakeConstraints { (make) in
             make.width.equalTo(tennisCourt.lineWidth)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.centerX.equalToSuperview().offset(-tennisCourt.serviceLineOffset)
         }
-        rightServiceLine.snp.makeConstraints { (make) in
+        rightServiceLine.snp.remakeConstraints { (make) in
             make.width.equalTo(tennisCourt.lineWidth)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.centerX.equalToSuperview().offset(tennisCourt.serviceLineOffset)
         }
         
-        // add the center service lines
-        leftCenterServiceLine.snp.makeConstraints { (make) in
+        // Add the center service lines
+        leftCenterServiceLine.snp.remakeConstraints { (make) in
             make.height.equalTo(tennisCourt.lineWidth)
             make.left.equalTo(leftServiceLine.snp.right)
             make.right.equalTo(netLine.snp.left)
             make.centerY.equalToSuperview()
         }
-        rightCenterServiceLine.snp.makeConstraints { (make) in
+        rightCenterServiceLine.snp.remakeConstraints { (make) in
             make.height.equalTo(tennisCourt.lineWidth)
             make.left.equalTo(netLine.snp.right)
             make.right.equalTo(rightServiceLine.snp.left)
             make.centerY.equalToSuperview()
         }
-        
     }
-
 }
