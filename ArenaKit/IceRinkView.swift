@@ -52,6 +52,8 @@ class IceRinkView: UIView {
     private let awayBottomNeutralDot = UIView()
     
     // View Arrays
+    private var goalLines: [UIView] = []
+    private var blueLines: [UIView] = []
     private var faceoffCircles: [UIView] = []
     private var faceoffCircleDots: [UIView] = []
     private var neutralZoneDots: [UIView] = []
@@ -61,27 +63,27 @@ class IceRinkView: UIView {
     // Colors with a redraw on set to update view
     var iceColor: UIColor = .white {
         didSet {
-            drawToScale()
+            draw()
         }
     }
     var redLineColor: UIColor = UIColor(red:0.91, green:0.36, blue:0.45, alpha:1.00) {
         didSet {
-            drawToScale()
+            draw()
         }
     }
     var blueLineColor: UIColor = UIColor(red:0.32, green:0.63, blue:0.82, alpha:1.00) {
         didSet {
-            drawToScale()
+            draw()
         }
     }
     var boardColor: UIColor = UIColor(red:0.32, green:0.63, blue:0.82, alpha:1.00) {
         didSet {
-            drawToScale()
+            draw()
         }
     }
     var creaseColor: UIColor = UIColor.blue.withAlphaComponent(0.2) {
         didSet {
-            drawToScale()
+            draw()
         }
     }
 
@@ -89,6 +91,8 @@ class IceRinkView: UIView {
         super.init(coder: aDecoder)
         
         // build array of similar elements
+        goalLines = [homeGoalLine, awayGoalLine]
+        blueLines = [homeBlueLine, awayBlueLine]
         faceoffCircles = [homeTopCircle, homeBottomCircle, awayTopCircle, awayBottomCircle, centerIceCircle]
         faceoffCircleDots = [homeTopCircleDot, homeBottomCircleDot, awayTopCircleDot, awayBottomCircleDot]
         neutralZoneDots = [homeTopNeutralDot, homeBottomNeutralDot, awayTopNeutralDot, awayBottomNeutralDot]
@@ -97,28 +101,61 @@ class IceRinkView: UIView {
         self.backgroundColor = .clear
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        // Give the rink it's corners and scaled border
-        iceRinkView.layer.cornerRadius = iceRinkView.bounds.width * iceRink.rinkCornerRatio
-        iceRinkView.layer.borderWidth = iceRinkView.bounds.width * iceRink.boardWidthRatio
-    }
-    
-    func drawToScale() {
-        iceRink.initWithWidth(self.frame.width)
-        drawRink()
-    }
-    
-    func drawRink() {
-        // Draw the base rink with border for bords
+    func setup() {
         iceRinkView.backgroundColor = iceColor
         iceRinkView.translatesAutoresizingMaskIntoConstraints = false
         iceRinkView.layer.borderColor = boardColor.cgColor
         iceRinkView.clipsToBounds = true
         self.addSubview(iceRinkView)
         
-        iceRinkView.snp.makeConstraints { (make) in
+        goalLines.forEach({ $0.backgroundColor = redLineColor })
+        goalLines.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        goalLines.forEach({ iceRinkView.addSubview($0) })
+        blueLines.forEach({ $0.backgroundColor = blueLineColor })
+        blueLines.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        blueLines.forEach({ iceRinkView.addSubview($0) })
+        centerIceLine.backgroundColor = redLineColor
+        centerIceLine.translatesAutoresizingMaskIntoConstraints = false
+        iceRinkView.addSubview(centerIceLine)
+        
+        faceoffCircles.forEach({ $0.backgroundColor = iceColor })
+        faceoffCircles.forEach({ $0.layer.borderColor = redLineColor.cgColor })
+        faceoffCircles.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        faceoffCircles.forEach({ iceRinkView.addSubview($0) })
+        centerIceCircle.layer.borderColor = blueLineColor.cgColor
+        faceoffCircleDots.forEach({ $0.backgroundColor = redLineColor })
+        faceoffCircleDots.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        faceoffCircleDots.forEach({ $0.layer.zPosition = 200 })
+        for index in 0...3 {
+            faceoffCircles[index].addSubview(faceoffCircleDots[index])
+        }
+        centerIceDot.backgroundColor = blueLineColor
+        centerIceDot.translatesAutoresizingMaskIntoConstraints = false
+        iceRinkView.addSubview(centerIceDot)
+        
+        neutralZoneDots.forEach({ $0.backgroundColor = redLineColor })
+        neutralZoneDots.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        neutralZoneDots.forEach({ iceRinkView.addSubview($0) })
+        
+        creases.forEach({ $0.backgroundColor = .clear })
+        creases.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        creases.forEach({ iceRinkView.addSubview($0) })
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // Give the rink it's corners and scaled border
+        iceRinkView.layer.cornerRadius = iceRinkView.bounds.width * iceRink.rinkCornerRatio
+        iceRinkView.layer.borderWidth = iceRinkView.bounds.width * iceRink.boardWidthRatio
+        
+        iceRink.initWithWidth(self.frame.width)
+        draw()
+    }
+    
+    func draw() {
+        // Draw the base rink with border for bords
+        iceRinkView.snp.remakeConstraints { (make) in
             make.top.equalTo(0)
             make.left.equalTo(0)
             make.right.equalTo(0)
@@ -127,51 +164,33 @@ class IceRinkView: UIView {
         }
         
         // Add the two goal lines
-        homeGoalLine.backgroundColor = redLineColor
-        homeGoalLine.translatesAutoresizingMaskIntoConstraints = false
-        awayGoalLine.backgroundColor = redLineColor
-        awayGoalLine.translatesAutoresizingMaskIntoConstraints = false
-        iceRinkView.addSubview(homeGoalLine)
-        iceRinkView.addSubview(awayGoalLine)
-        
-        homeGoalLine.snp.makeConstraints { (make) in
+        homeGoalLine.snp.remakeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.width.equalTo(iceRink.minorLineWidth)
             make.centerX.equalTo(self.snp.left).offset(iceRink.goalLineOffset)
         }
-        awayGoalLine.snp.makeConstraints { (make) in
+        awayGoalLine.snp.remakeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.width.equalTo(iceRink.minorLineWidth)
             make.centerX.equalTo(self.snp.right).offset(-iceRink.goalLineOffset)
         }
         
-        
         // Add the blue lines and red line
-        homeBlueLine.backgroundColor = blueLineColor
-        awayBlueLine.backgroundColor = blueLineColor
-        centerIceLine.backgroundColor = redLineColor
-        homeBlueLine.translatesAutoresizingMaskIntoConstraints = false
-        awayBlueLine.translatesAutoresizingMaskIntoConstraints = false
-        centerIceLine.translatesAutoresizingMaskIntoConstraints = false
-        iceRinkView.addSubview(homeBlueLine)
-        iceRinkView.addSubview(awayBlueLine)
-        iceRinkView.addSubview(centerIceLine)
-        
-        homeBlueLine.snp.makeConstraints { (make) in
+        homeBlueLine.snp.remakeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.width.equalTo(iceRink.majorLineWidth)
             make.centerX.equalTo(homeGoalLine.snp.right).offset(iceRink.blueLineOffset)
         }
-        awayBlueLine.snp.makeConstraints { (make) in
+        awayBlueLine.snp.remakeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.width.equalTo(iceRink.majorLineWidth)
             make.centerX.equalTo(awayGoalLine.snp.left).offset(-iceRink.blueLineOffset)
         }
-        centerIceLine.snp.makeConstraints { (make) in
+        centerIceLine.snp.remakeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.width.equalTo(iceRink.majorLineWidth)
@@ -179,49 +198,38 @@ class IceRinkView: UIView {
         }
         centerIceLine.layer.zPosition = 100
         
-        
-        // Add all of the faceoff circles
-        for circle in faceoffCircles {
-            circle.backgroundColor = iceColor
-            circle.layer.borderColor = redLineColor.cgColor
-            circle.translatesAutoresizingMaskIntoConstraints = false
-            
-            circle.layer.cornerRadius = iceRink.circleWidth / 2
-            circle.layer.borderWidth = iceRink.minorLineWidth
-            
-            iceRinkView.addSubview(circle)
-        }
-        homeTopCircle.snp.makeConstraints { (make) in
+        // Add the faceoff circles
+        faceoffCircles.forEach({ $0.layer.cornerRadius = iceRink.circleWidth / 2 })
+        faceoffCircles.forEach({ $0.layer.borderWidth = iceRink.minorLineWidth })
+        homeTopCircle.snp.remakeConstraints { (make) in
             make.height.equalTo(iceRink.circleWidth)
             make.width.equalTo(iceRink.circleWidth)
             make.centerX.equalTo(homeGoalLine.snp.right).offset(iceRink.faceoffHorizontalOffset)
             make.centerY.equalTo(self.snp.top).offset(iceRink.faceoffVerticalOffset)
         }
-        homeBottomCircle.snp.makeConstraints { (make) in
+        homeBottomCircle.snp.remakeConstraints { (make) in
             make.height.equalTo(iceRink.circleWidth)
             make.width.equalTo(iceRink.circleWidth)
             make.centerX.equalTo(homeGoalLine.snp.right).offset(iceRink.faceoffHorizontalOffset)
             make.centerY.equalTo(self.snp.bottom).offset(-iceRink.faceoffVerticalOffset)
         }
-        awayTopCircle.snp.makeConstraints { (make) in
+        awayTopCircle.snp.remakeConstraints { (make) in
             make.height.equalTo(iceRink.circleWidth)
             make.width.equalTo(iceRink.circleWidth)
             make.centerX.equalTo(awayGoalLine.snp.left).offset(-iceRink.faceoffHorizontalOffset)
             make.centerY.equalTo(self.snp.top).offset(iceRink.faceoffVerticalOffset)
         }
-        awayBottomCircle.snp.makeConstraints { (make) in
+        awayBottomCircle.snp.remakeConstraints { (make) in
             make.height.equalTo(iceRink.circleWidth)
             make.width.equalTo(iceRink.circleWidth)
             make.centerX.equalTo(awayGoalLine.snp.left).offset(-iceRink.faceoffHorizontalOffset)
             make.centerY.equalTo(self.snp.bottom).offset(-iceRink.faceoffVerticalOffset)
         }
-        centerIceCircle.snp.makeConstraints { (make) in
+        centerIceCircle.snp.remakeConstraints { (make) in
             make.height.equalTo(iceRink.circleWidth)
             make.width.equalTo(iceRink.circleWidth)
             make.center.equalToSuperview()
         }
-        centerIceCircle.layer.borderColor = blueLineColor.cgColor
-        
         
         // Add the dashes to the faceoff circles
         for index in 0...3 {
@@ -233,20 +241,19 @@ class IceRinkView: UIView {
                 line.translatesAutoresizingMaskIntoConstraints = false
                 faceoffCircles[index].addSubview(line)
             }
-            leftLine.snp.makeConstraints({ (make) in
+            leftLine.snp.remakeConstraints({ (make) in
                 make.height.equalToSuperview().multipliedBy(1.2)
                 make.width.equalTo(iceRink.minorLineWidth)
                 make.centerX.equalToSuperview().offset(-5)
                 make.centerY.equalToSuperview()
             })
-            rightLine.snp.makeConstraints({ (make) in
+            rightLine.snp.remakeConstraints({ (make) in
                 make.height.equalToSuperview().multipliedBy(1.2)
                 make.width.equalTo(iceRink.minorLineWidth)
                 make.centerX.equalToSuperview().offset(5)
                 make.centerY.equalToSuperview()
             })
         }
-        
         
         // Mask the lines with a view, I was lazy here and couldnt get a proper mask layer to work
         for index in 0...3 {
@@ -255,7 +262,7 @@ class IceRinkView: UIView {
             v.translatesAutoresizingMaskIntoConstraints = false
             faceoffCircles[index].addSubview(v)
             
-            v.snp.makeConstraints({ (make) in
+            v.snp.remakeConstraints({ (make) in
                 make.top.equalToSuperview()
                 make.left.equalToSuperview()
                 make.right.equalToSuperview()
@@ -264,15 +271,10 @@ class IceRinkView: UIView {
             v.layer.cornerRadius = iceRink.circleWidth / 2
         }
         
-        
         // Add the faceoff dots to the circles
         // go to index of 3 to skip center ice, its a smaller dot there
         for index in 0...3 {
-            faceoffCircleDots[index].backgroundColor = redLineColor
-            faceoffCircleDots[index].translatesAutoresizingMaskIntoConstraints = false
-            faceoffCircles[index].addSubview(faceoffCircleDots[index])
-            
-            faceoffCircleDots[index].snp.makeConstraints { (make) in
+            faceoffCircleDots[index].snp.remakeConstraints { (make) in
                 make.center.equalToSuperview()
                 make.width.equalTo(iceRink.dotWidth)
                 make.height.equalTo(iceRink.dotWidth)
@@ -280,74 +282,59 @@ class IceRinkView: UIView {
             faceoffCircleDots[index].layer.cornerRadius = iceRink.dotWidth / 2
         }
         
-        
         // Add center ice dot
-        centerIceDot.backgroundColor = blueLineColor
-        centerIceDot.translatesAutoresizingMaskIntoConstraints = false
-        iceRinkView.addSubview(centerIceDot)
-        centerIceDot.snp.makeConstraints { (make) in
+        centerIceDot.snp.remakeConstraints { (make) in
             make.height.equalTo(iceRink.centerDotWidth)
             make.width.equalTo(iceRink.centerDotWidth)
             make.center.equalToSuperview()
         }
-        // puts it above the red line
         centerIceDot.layer.zPosition = 101
         centerIceDot.layer.cornerRadius = iceRink.centerDotWidth / 2
         
-        
         // Add the neutral zone dots
-        for dot in neutralZoneDots {
-            dot.backgroundColor = redLineColor
-            dot.translatesAutoresizingMaskIntoConstraints = false
-            iceRinkView.addSubview(dot)
-        }
-        homeTopNeutralDot.snp.makeConstraints { (make) in
-            make.height.equalTo(iceRink.dotWidth)
-            make.width.equalTo(iceRink.dotWidth)
-            make.centerX.equalTo(homeBlueLine.snp.right).offset(iceRink.neutralDotOffset)
-            make.centerY.equalTo(homeTopCircleDot)
-        }
-        homeBottomNeutralDot.snp.makeConstraints { (make) in
-            make.height.equalTo(iceRink.dotWidth)
-            make.width.equalTo(iceRink.dotWidth)
-            make.centerX.equalTo(homeBlueLine.snp.right).offset(iceRink.neutralDotOffset)
-            make.centerY.equalTo(homeBottomCircleDot)
-        }
-        awayTopNeutralDot.snp.makeConstraints { (make) in
-            make.height.equalTo(iceRink.dotWidth)
-            make.width.equalTo(iceRink.dotWidth)
-            make.centerX.equalTo(awayBlueLine.snp.left).offset(-iceRink.neutralDotOffset)
-            make.centerY.equalTo(homeTopCircleDot)
-        }
-        awayBottomNeutralDot.snp.makeConstraints { (make) in
-            make.height.equalTo(iceRink.dotWidth)
-            make.width.equalTo(iceRink.dotWidth)
-            make.centerX.equalTo(awayBlueLine.snp.left).offset(-iceRink.neutralDotOffset)
-            make.centerY.equalTo(homeBottomCircleDot)
-        }
         for dot in neutralZoneDots {
             dot.layer.cornerRadius = iceRink.dotWidth / 2
         }
-        
-        
-        // Add the two goal creases
-        for crease in creases {
-            crease.backgroundColor = UIColor.clear
-            crease.translatesAutoresizingMaskIntoConstraints = false
-            iceRinkView.addSubview(crease)
+        homeTopNeutralDot.snp.remakeConstraints { (make) in
+            make.height.equalTo(iceRink.dotWidth)
+            make.width.equalTo(iceRink.dotWidth)
+            make.centerX.equalTo(homeBlueLine.snp.right).offset(iceRink.neutralDotOffset)
+            make.centerY.equalTo(homeTopCircleDot)
         }
-        homeCrease.snp.makeConstraints { (make) in
+        homeBottomNeutralDot.snp.remakeConstraints { (make) in
+            make.height.equalTo(iceRink.dotWidth)
+            make.width.equalTo(iceRink.dotWidth)
+            make.centerX.equalTo(homeBlueLine.snp.right).offset(iceRink.neutralDotOffset)
+            make.centerY.equalTo(homeBottomCircleDot)
+        }
+        awayTopNeutralDot.snp.remakeConstraints { (make) in
+            make.height.equalTo(iceRink.dotWidth)
+            make.width.equalTo(iceRink.dotWidth)
+            make.centerX.equalTo(awayBlueLine.snp.left).offset(-iceRink.neutralDotOffset)
+            make.centerY.equalTo(homeTopCircleDot)
+        }
+        awayBottomNeutralDot.snp.remakeConstraints { (make) in
+            make.height.equalTo(iceRink.dotWidth)
+            make.width.equalTo(iceRink.dotWidth)
+            make.centerX.equalTo(awayBlueLine.snp.left).offset(-iceRink.neutralDotOffset)
+            make.centerY.equalTo(homeBottomCircleDot)
+        }
+        
+        // Add the crease
+        homeCrease.snp.remakeConstraints { (make) in
             make.height.equalTo(iceRink.creaseHeight)
             make.width.equalTo(iceRink.creaseWidth)
             make.centerY.equalToSuperview()
             make.left.equalTo(homeGoalLine.snp.right).offset(-iceRink.minorLineWidth * 0.5)
         }
-        awayCrease.snp.makeConstraints { (make) in
+        awayCrease.snp.remakeConstraints { (make) in
             make.height.equalTo(iceRink.creaseHeight)
             make.width.equalTo(iceRink.creaseWidth)
             make.centerY.equalToSuperview()
             make.right.equalTo(awayGoalLine.snp.left).offset(iceRink.minorLineWidth * 0.5)
         }
+        
+        // Crease
         let homeGoalShapeLayer = CAShapeLayer()
         let awayGoalShapeLayer = CAShapeLayer()
         let goalShapeLayers: [CAShapeLayer] = [homeGoalShapeLayer, awayGoalShapeLayer]
@@ -361,7 +348,7 @@ class IceRinkView: UIView {
         }
         homeCrease.layer.addSublayer(homeGoalShapeLayer)
         awayCrease.layer.addSublayer(awayGoalShapeLayer)
-        awayCrease.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+        awayCrease.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
     }
     
     func returnGoalBezierPath() -> UIBezierPath {
