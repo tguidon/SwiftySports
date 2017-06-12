@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController, IceRinkViewDataSource, TennisCourtViewDataSource, ProBasketballCourtViewDataSource, SoccerFieldViewDataSource {
+class ViewController: UIViewController {
     @IBOutlet weak var iceRinkView: IceRinkView!
     @IBOutlet weak var tennisCourtView: TennisCourtView!
     @IBOutlet weak var proBasketballCourtView: ProBasketballCourtView!
     @IBOutlet weak var soccerFieldView: SoccerFieldView!
-
+    
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var swiftySportsView: UIView!
@@ -21,38 +21,26 @@ class ViewController: UIViewController, IceRinkViewDataSource, TennisCourtViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillLayoutSubviews() {
         
-        iceRinkView.dataSource = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         iceRinkView.drawToScale()
-        
-        tennisCourtView.dataSource = self
         tennisCourtView.drawToScale()
-        
-        proBasketballCourtView.dataSource = self
         proBasketballCourtView.drawToScale()
-        
-        soccerFieldView.dataSource = self
         soccerFieldView.drawToScale()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
-    }
-    
-    func widthForRink(_ iceRinkView: IceRinkView) -> CGFloat {
-        return 320.0
-    }
-    
-    func widthForCourt(_ tennisCourtView: TennisCourtView) -> CGFloat {
-        return 320.0
-    }
-    
-    func widthForProCourt(_ proBasketballCourtView: ProBasketballCourtView) -> CGFloat {
-        return 320.0
-    }
-    
-    func widthForSoccerField(_ soccerFieldView: SoccerFieldView) -> CGFloat {
-        return 320.0
     }
 
 }

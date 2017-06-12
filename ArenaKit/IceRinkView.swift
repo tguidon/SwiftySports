@@ -9,14 +9,8 @@
 import UIKit
 import SnapKit
 
-
-protocol IceRinkViewDataSource {
-    func widthForRink(_ iceRinkView: IceRinkView) -> CGFloat
-}
-
 class IceRinkView: UIView {
     
-    var dataSource: IceRinkViewDataSource?
     let iceRink = IceRink()
 
     // UI
@@ -111,6 +105,11 @@ class IceRinkView: UIView {
         iceRinkView.layer.borderWidth = iceRinkView.bounds.width * iceRink.boardWidthRatio
     }
     
+    func drawToScale() {
+        iceRink.initWithWidth(self.frame.width)
+        drawRink()
+    }
+    
     func drawRink() {
         // Draw the base rink with border for bords
         iceRinkView.backgroundColor = iceColor
@@ -126,7 +125,6 @@ class IceRinkView: UIView {
             make.bottom.equalTo(0)
             make.width.equalToSuperview()
         }
-
         
         // Add the two goal lines
         homeGoalLine.backgroundColor = redLineColor
@@ -364,16 +362,6 @@ class IceRinkView: UIView {
         homeCrease.layer.addSublayer(homeGoalShapeLayer)
         awayCrease.layer.addSublayer(awayGoalShapeLayer)
         awayCrease.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
-    }
-    
-    func drawToScale() {
-        guard let width = dataSource?.widthForRink(self) else {
-            print("No width set in dataSource")
-            return
-        }
-        
-        iceRink.initWithWidth(width)
-        drawRink()
     }
     
     func returnGoalBezierPath() -> UIBezierPath {

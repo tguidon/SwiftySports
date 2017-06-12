@@ -9,13 +9,8 @@
 import UIKit
 import SnapKit
 
-protocol TennisCourtViewDataSource {
-    func widthForCourt(_ tennisCourtView: TennisCourtView) -> CGFloat
-}
-
 class TennisCourtView: UIView {
     
-    var dataSource: TennisCourtViewDataSource?
     let tennisCourt = TennisCourt()
     
     // UI
@@ -57,6 +52,11 @@ class TennisCourtView: UIView {
         self.backgroundColor = .clear
     }
     
+    func drawToScale() {
+        tennisCourt.initWithWidth(self.frame.width)
+        drawCourt()
+    }
+    
     func drawCourt() {
         // Add the base green court
         tennisCourtView.backgroundColor = courtColor
@@ -64,7 +64,6 @@ class TennisCourtView: UIView {
         tennisCourtView.layer.borderColor = lineColor.cgColor
         tennisCourtView.layer.borderWidth = tennisCourt.lineWidth
         self.addSubview(tennisCourtView)
-        print(self.frame.width)
         tennisCourtView.snp.makeConstraints { (make) in
             make.top.equalTo(0)
             make.left.equalTo(0)
@@ -130,16 +129,6 @@ class TennisCourtView: UIView {
             make.centerY.equalToSuperview()
         }
         
-    }
-    
-    func drawToScale() {
-        guard let width = dataSource?.widthForCourt(self) else {
-            print("No width set in dataSource")
-            return
-        }
-        
-        tennisCourt.initWithWidth(width)
-        drawCourt()
     }
 
 }

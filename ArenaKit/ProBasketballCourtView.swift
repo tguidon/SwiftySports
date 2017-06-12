@@ -102,6 +102,11 @@ class ProBasketballCourtView: UIView {
         self.clipsToBounds = true
     }
     
+    func drawToScale() {
+        proBasketballCourt.initWithWidth(self.frame.width)
+        drawCourt()
+    }
+    
     func drawCourt() {
         proBasketballCourtView.backgroundColor = courtColor
         proBasketballCourtView.translatesAutoresizingMaskIntoConstraints = false
@@ -447,16 +452,6 @@ class ProBasketballCourtView: UIView {
         bezierPath.close()
     
         return bezierPath
-    }
-    
-    func drawToScale() {
-        guard let width = dataSource?.widthForProCourt(self) else {
-            print("No width set in datasource")
-            return
-        }
-        
-        proBasketballCourt.initWithWidth(width)
-        drawCourt()
     }
     
 }

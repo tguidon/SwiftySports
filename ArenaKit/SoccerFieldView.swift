@@ -9,13 +9,8 @@
 import UIKit
 import SnapKit
 
-protocol SoccerFieldViewDataSource {
-    func widthForSoccerField(_ soccerFieldView: SoccerFieldView) -> CGFloat
-}
-
 class SoccerFieldView: UIView {
     
-    var dataSource: SoccerFieldViewDataSource?
     let soccerField = SoccerField()
     
     // UI
@@ -74,6 +69,11 @@ class SoccerFieldView: UIView {
 
         self.backgroundColor = fieldColor
         self.clipsToBounds = true
+    }
+    
+    func drawToScale() {
+        soccerField.initWithWidth(self.frame.width)
+        drawField()
     }
     
     func drawField() {
@@ -298,16 +298,6 @@ class SoccerFieldView: UIView {
         bezierPath.close()
         
         return bezierPath
-    }
-    
-    func drawToScale() {
-        guard let width = dataSource?.widthForSoccerField(self) else {
-            print("No width set in dataSource")
-            return
-        }
-        
-        soccerField.initWithWidth(width)
-        drawField()
     }
     
 }

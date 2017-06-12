@@ -145,8 +145,8 @@
 		E8FE19831E385281002BEF7D /* FootballField */ = {
 			isa = PBXGroup;
 			children = (
-				E81C33CE1E2F100E0052DC0C /* FootballFieldView.swift */,
 				E8FE198F1E393AD6002BEF7D /* FootballField.swift */,
+				E81C33CE1E2F100E0052DC0C /* FootballFieldView.swift */,
 			);
 			name = FootballField;
 			sourceTree = "<group>";
@@ -154,8 +154,8 @@
 		E8FE19841E385297002BEF7D /* ProBasketballCourt */ = {
 			isa = PBXGroup;
 			children = (
-				E8A1FCAA1E3291F3009E2147 /* ProBasketballCourtView.swift */,
 				E8FE198D1E393AC8002BEF7D /* ProBasketballCourt.swift */,
+				E8A1FCAA1E3291F3009E2147 /* ProBasketballCourtView.swift */,
 			);
 			name = ProBasketballCourt;
 			sourceTree = "<group>";
